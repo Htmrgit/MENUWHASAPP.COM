@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deepanshu Restaurant Menu</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f7f7f7;
+      color: #333;
+    }
+    header {
+      background: #e53935;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+    .menu-section {
+      padding: 1rem;
+    }
+    .section-title {
+      font-size: 1.3rem;
+      margin: 1rem 0 0.5rem;
+      border-bottom: 2px solid #e53935;
+      padding-bottom: 0.3rem;
+    }
+    .menu-item {
+      background: white;
+      margin: 1rem 0;
+      padding: 0.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .menu-item img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .menu-item h3 {
+      margin: 0.5rem 0 0.2rem;
+    }
+    .menu-item p {
+      margin: 0.2rem 0;
+    }
+    .menu-item .price {
+      font-weight: bold;
+      margin-top: 0.3rem;
+    }
+    .menu-item button {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+    .cart {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 2px solid #ccc;
+      padding: 1rem;
+    }
+    .cart-title {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.3rem 0;
+    }
+    .send-btn {
+      background: #25d366;
+      color: white;
+      border: none;
+      padding: 0.5rem;
+      width: 100%;
+      border-radius: 5px;
+      margin-top: 1rem;
+      font-size: 1rem;
+    }
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .popup-content {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+    }
+    .popup-content input,
+    .popup-content textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+    }
+  </style>
+</head>
+<body>
+  <header>Deepanshu Restaurant - Order Menu</header>
+
+  <div class="menu-section" id="menu">
+    <div class="section-title">Chinese Starters</div>
+    <div class="menu-item">
+      <img src="https://www.cubesnjuliennes.com/wp-content/uploads/2020/01/Chilli-Paneer-Recipe.jpg" alt="Chilli Paneer">
+      <h3>Chilli Paneer (10 Pcs)</h3>
+      <p>Spicy paneer cubes stir-fried with capsicum and onions in a tangy chilli sauce.</p>
+      <div class="price">₹280</div>
+      <button onclick="addToCart('Chilli Paneer (10 Pcs)', 280)">Add to Cart</button>
+    </div>
+    <div class="menu-item">
+      <img src="https://i.ytimg.com/vi/m8qv7M-K3V4/maxresdefault.jpg" alt="Chicken Lollipop">
+      <h3>Chicken Lollipop (5 Pcs)</h3>
+      <p>Fried chicken wings served with spicy schezwan dip.</p>
+      <div class="price">₹240</div>
+      <button onclick="addToCart('Chicken Lollipop (5 Pcs)', 240)">Add to Cart</button>
+    </div>
+
+    <div class="section-title">Main Course</div>
+    <div class="menu-item">
+      <img src="https://www.indianhealthyrecipes.com/wp-content/uploads/2021/12/veg-fried-rice-recipe.jpg" alt="Veg Fried Rice">
+      <h3>Veg Fried Rice</h3>
+      <p>Classic stir-fried rice with fresh vegetables and soy sauce.</p>
+      <div class="price">Half ₹100 / Full ₹160</div>
+      <button onclick="addToCart('Veg Fried Rice (Full)', 160)">Add Full</button>
+      <button onclick="addToCart('Veg Fried Rice (Half)', 100)">Add Half</button>
+    </div>
+
+    <div class="menu-item">
+      <img src="https://www.cookwithmanali.com/wp-content/uploads/2019/06/Chicken-Curry.jpg" alt="Butter Chicken">
+      <h3>Butter Chicken</h3>
+      <p>Boneless chicken pieces cooked in creamy tomato gravy.</p>
+      <div class="price">Half ₹610 / Full ₹1080</div>
+      <button onclick="addToCart('Butter Chicken (Half)', 610)">Add Half</button>
+      <button onclick="addToCart('Butter Chicken (Full)', 1080)">Add Full</button>
+    </div>
+  </div>
+
+  <div class="cart" id="cart">
+    <div class="cart-title">Your Cart</div>
+    <div id="cart-items"></div>
+    <button class="send-btn" onclick="showPopup()">Proceed to Checkout</button>
+  </div>
+
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <h3>Enter Delivery Details</h3>
+      <input type="text" id="customerName" placeholder="Your Name" />
+      <input type="text" id="customerAddress" placeholder="Delivery Address" />
+      <textarea id="customerNote" rows="3" placeholder="Any Notes (optional)"></textarea>
+      <button class="send-btn" onclick="sendWhatsApp()">Send Order on WhatsApp</button>
+    </div>
+  </div>
+
+  <script>
+    const cart = [];
+
+    function addToCart(item, price) {
+      cart.push({ item, price });
+      updateCart();
+    }
+
+    function updateCart() {
+      const cartItemsDiv = document.getElementById('cart-items');
+      cartItemsDiv.innerHTML = '';
+      cart.forEach((c, i) => {
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `<span>${c.item}</span><span>₹${c.price}</span>`;
+        cartItemsDiv.appendChild(div);
+      });
+    }
+
+    function showPopup() {
+      document.getElementById('popup').style.display = 'flex';
+    }
+
+    function sendWhatsApp() {
+      const name = document.getElementById('customerName').value;
+      const address = document.getElementById('customerAddress').value;
+      const note = document.getElementById('customerNote').value;
+      if (!name || !address) return alert('Please fill name and address');
+
+      const number = '919910109626';
+      let message = `New Order from ${name}\nAddress: ${address}\n\nItems:\n`;
+      cart.forEach(c => message += `- ${c.item} - ₹${c.price}\n`);
+      const total = cart.reduce((sum, c) => sum + c.price, 0);
+      message += `\nTotal: ₹${total}`;
+      if (note) message += `\n\nNote: ${note}`;
+
+      const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank');
+    }
+  </script>
+</body>
+</html>
