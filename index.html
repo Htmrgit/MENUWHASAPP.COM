@@ -102,11 +102,11 @@
     }
 
     /* Main content sections */
-    .menu-section, .cart-section, .about-section {
+    .menu-section, .cart-section, .about-section, .order-online-section { /* Added .order-online-section */
       padding: 1rem;
       display: none; /* Hidden by default, managed by JS navigation */
     }
-    .menu-section.active, .cart-section.active, .about-section.active {
+    .menu-section.active, .cart-section.active, .about-section.active, .order-online-section.active { /* Added .order-online-section.active */
         display: block;
     }
 
@@ -421,6 +421,73 @@
         padding-top: 2px;
     }
 
+    /* Order Online Page Styling */
+    .order-online-section {
+        padding: 1.5rem 1rem;
+        text-align: center;
+    }
+
+    .order-online-section .section-title {
+        margin-top: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .order-button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem; /* Space between buttons */
+        max-width: 400px; /* Max width for buttons */
+        margin: 0 auto; /* Center the button group */
+    }
+
+    .order-button-group a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-decoration: none;
+        color: white;
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .order-button-group a:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .order-button-group a i {
+        font-size: 1.6rem; /* Larger icons for these prominent buttons */
+        margin-right: 0.8rem;
+    }
+
+    .order-button-whatsapp {
+        background: #25d366; /* WhatsApp Green */
+    }
+
+    .order-button-whatsapp:hover {
+        background: #128C7E; /* Darker WhatsApp Green */
+    }
+
+    .order-button-zomato {
+        background: #E4002B; /* Zomato Red */
+    }
+
+    .order-button-zomato:hover {
+        background: #A0001D; /* Darker Zomato Red */
+    }
+
+    .order-button-swiggy {
+        background: #FC8019; /* Swiggy Orange */
+    }
+
+    .order-button-swiggy:hover {
+        background: #DB6900; /* Darker Swiggy Orange */
+    }
+
 
     /* Popup */
     .popup {
@@ -554,11 +621,6 @@
         to { opacity: 0; transform: translateX(-50%) translateY(-30px); }
     }
 
-    /* Partner Links (removed from HTML, but keep styles in case of future use) */
-    .partner-links {
-        display: none; /* Hidden */
-    }
-
     /* Mobile Responsiveness - fine-tuning */
     @media (max-width: 600px) {
         header {
@@ -566,12 +628,12 @@
             padding: 1rem 0.8rem;
         }
         .nav button {
-            font-size: 0.7rem; /* Even smaller font for 6 buttons */
-            padding: 0.3rem; /* Reduced padding */
-            margin: 0 1px; /* Minimal margin */
+            font-size: 0.8rem; /* Slightly larger again for 4 buttons */
+            padding: 0.3rem;
+            margin: 0 2px; /* A bit more margin */
         }
         .nav button i {
-            font-size: 1.2rem; /* Adjusted icon size */
+            font-size: 1.3rem;
             margin-bottom: 0.1rem;
         }
         .section-title {
@@ -671,6 +733,14 @@
             padding: 0.7rem 1.5rem;
             font-size: 1rem;
         }
+        .order-button-group a {
+            padding: 0.8rem 1.2rem;
+            font-size: 1rem;
+        }
+        .order-button-group a i {
+            font-size: 1.4rem;
+            margin-right: 0.6rem;
+        }
     }
   </style>
 </head>
@@ -708,7 +778,7 @@
         <span id="cart-total-price">₹0.00</span>
     </div>
     <div class="cart-actions">
-        <button class="send-btn" onclick="openOrderPopup()">Proceed to Order</button>
+        <button class="send-btn" onclick="openOrderPopup()">Proceed to Order (WhatsApp)</button>
         <button class="clear-cart-btn" onclick="clearCart()">Clear Cart</button>
     </div>
   </div>
@@ -728,7 +798,25 @@
     <p>Thank you for choosing Deepanshu Restaurant. We look forward to serving you!</p>
   </div>
 
-  <!-- Order Popup -->
+  <!-- ORDER ONLINE SECTION (New Page) -->
+  <div class="order-online-section" id="order-online">
+    <h2 class="section-title">Order Online</h2>
+    <p style="text-align: center; color: var(--text-medium); margin-bottom: 2rem;">Choose your preferred online platform or order directly via WhatsApp.</p>
+    <div class="order-button-group">
+      <a href="https://wa.me/919910109626?text=I want to order food" target="_blank" class="order-button-whatsapp">
+        <i class="bi bi-whatsapp"></i> Order via WhatsApp
+      </a>
+      <a href="https://www.zomato.com/restaurants/deepanshu-restaurant" target="_blank" class="order-button-zomato">
+        <i class="bi bi-shop"></i> Order on Zomato
+      </a>
+      <a href="https://www.swiggy.com/restaurants/deepanshu-restaurant" target="_blank" class="order-button-swiggy">
+        <i class="bi bi-shop"></i> Order on Swiggy
+      </a>
+    </div>
+  </div>
+
+
+  <!-- Order Popup (for direct WhatsApp order from cart) -->
   <div class="popup" id="order-popup">
     <div class="popup-content">
       <h3>Place Your Order</h3>
@@ -742,7 +830,7 @@
       <textarea id="customer-address" placeholder="Enter your delivery address"></textarea>
 
       <div class="popup-buttons">
-          <button class="submit-order-btn" onclick="submitOrder()">Order via WhatsApp</button>
+          <button class="submit-order-btn" onclick="submitOrder()">Confirm WhatsApp Order</button>
           <button class="close-popup-btn" onclick="closeOrderPopup()">Cancel</button>
       </div>
     </div>
@@ -753,14 +841,8 @@
     <button id="menu-nav-btn" class="active" onclick="navigate('menu', this)"><i class="bi bi-card-list"></i>Menu</button>
     <button id="cart-nav-btn" onclick="navigate('cart', this)"><i class="bi bi-cart4"></i>Cart</button>
     <button id="about-nav-btn" onclick="navigate('about', this)"><i class="bi bi-info-circle"></i>About</button>
-    <button onclick="window.open('https://www.zomato.com/restaurants/deepanshu-restaurant', '_blank')">
-      <i class="bi bi-shop"></i>Zomato
-    </button>
-    <button onclick="window.open('https://www.swiggy.com/restaurants/deepanshu-restaurant', '_blank')">
-      <i class="bi bi-shop"></i>Swiggy
-    </button>
-    <button onclick="window.open('https://wa.me/919910109626?text=I want to order food', '_blank')">
-      <i class="bi bi-whatsapp"></i>Order Online
+    <button id="order-online-nav-btn" onclick="navigate('order-online', this)">
+      <i class="bi bi-box-arrow-up-right"></i>Order
     </button>
   </div>
 
@@ -946,14 +1028,14 @@
     }
 
     /**
-     * Navigates to a specific section of the page (menu, cart, about).
+     * Navigates to a specific section of the page (menu, cart, about, order-online).
      * Updates active state of navigation buttons.
      * @param {string} sectionId - The ID of the section to navigate to.
      * @param {HTMLElement} clickedButton - The navigation button that was clicked.
      */
     function navigate(sectionId, clickedButton = null) {
       // Hide all sections
-      document.querySelectorAll('.menu-section, .cart-section, .about-section').forEach(section => {
+      document.querySelectorAll('.menu-section, .cart-section, .about-section, .order-online-section').forEach(section => {
         section.classList.remove('active');
       });
       // Show the target section
