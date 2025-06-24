@@ -788,7 +788,6 @@
     <h2 class="section-title">About Deepanshu Restaurant</h2>
     <p>Welcome to <strong>Deepanshu Restaurant</strong>, where culinary excellence meets a warm and inviting atmosphere. We are passionate about serving authentic and delicious food prepared with the freshest ingredients.</p>
     <p>Our journey began with a simple goal: to create a place where friends and families can gather to enjoy great food and make lasting memories. From our savory starters to our delightful desserts, every dish is crafted with care and a touch of our unique flavor.</p>
-    <p>What makes us special:</p>
     <ul>
         <li><i class="bi bi-check-circle-fill"></i> Fresh, locally sourced ingredients.</li>
         <li><i class="bi bi-check-circle-fill"></i> A diverse menu catering to all tastes.</li>
@@ -1164,11 +1163,16 @@
         }
 
         let orderDetails = "Hello Deepanshu Restaurant, I would like to place an order:\n\n";
+        
+        // Add each item from the cart to the order details
         cart.forEach(item => {
             orderDetails += `${item.name} (x${item.quantity}) - ₹${(item.price * item.quantity).toFixed(2)}\n`;
         });
+        
+        // Calculate the total amount
         const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
         orderDetails += `\nTotal: ₹${totalAmount.toFixed(2)}\n\n`;
+        
         orderDetails += `Name: ${customerName.trim()}\n`;
         orderDetails += `Phone: ${customerPhone.trim()}\n`;
         if (customerAddress.trim()) {
