@@ -112,7 +112,7 @@
 
     .section-title {
       font-size: 1.6rem; /* Slightly larger title */
-      margin: 1.8rem 0 1rem;
+      /* margin: 1.8rem 0 1rem; Removed direct margin, now handled by wrapper */
       border-bottom: 3px solid var(--primary-red); /* Thicker border */
       padding-bottom: 0.6rem;
       color: var(--primary-red);
@@ -120,18 +120,28 @@
       text-align: center;
     }
 
+    /* Banner Image */
+    .banner-image {
+        width: 100%;
+        height: 200px; /* Fixed height for banner */
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 1.5rem; /* Space below banner */
+        box-shadow: 0 4px 15px var(--shadow-medium);
+    }
+
     /* Search Bar */
     .search-bar {
-      margin: 1rem 0 1rem;
+      margin: 0rem 0 1rem; /* Adjusted margin to be below banner */
       display: flex;
       gap: 0.5rem;
       padding: 0.8rem 1rem; /* Generous padding */
       background: var(--background-light);
-      position: sticky;
-      top: 4.5rem; /* Below the header (header height + its padding) */
+      position: sticky; /* Made sticky */
+      top: 60px; /* Below the header (adjust based on actual header height) */
       z-index: 998;
       border-bottom: 1px solid var(--border-color);
-      box-shadow: 0 2px 8px var(--shadow-light); /* Subtle shadow for sticky effect */
+      box-shadow: 0 2px 8px var(--shadow-light); /* Subtle shadow */
       border-radius: 12px; /* Rounded bar */
     }
     .search-bar input {
@@ -150,45 +160,102 @@
       box-shadow: 0 0 0 3px var(--light-red); /* Focus ring effect */
     }
 
-    /* Filter Tabs */
+    /* Filter Tabs (Removed from HTML) */
     .filter-tabs {
-      display: flex;
-      overflow-x: auto; /* Enable horizontal scrolling */
-      -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-      padding: 0.5rem 0; /* Keeps it within bounds */
-      margin-bottom: 1rem;
-      gap: 0.5rem;
-      position: sticky;
-      top: 10.5rem; /* Below search bar and header */
-      background: var(--background-light);
-      z-index: 997;
-      border-bottom: 1px solid var(--border-color);
-      white-space: nowrap; /* Prevent wrapping */
+      display: none; /* Hide horizontal filter tabs */
     }
-    .filter-tabs::-webkit-scrollbar {
-        display: none; /* Hide scrollbar for a cleaner look */
+
+    /* New Category Dropdown Styling */
+    .section-title-wrapper {
+        text-align: center;
+        cursor: pointer;
+        margin: 1.8rem 0 1rem; /* Consistent margin as original section-title */
+        position: relative;
     }
-    .filter-tabs button {
-      flex-shrink: 0; /* Prevent buttons from shrinking */
-      padding: 0.6rem 1.2rem;
-      background: white;
-      border: 1px solid var(--primary-red);
-      color: var(--primary-red);
-      border-radius: 25px;
-      cursor: pointer;
-      transition: background 0.3s, color 0.3s, transform 0.1s;
-      font-weight: 600;
-      box-shadow: 0 2px 5px var(--shadow-light);
+
+    .section-title-wrapper .section-title {
+        display: inline-flex; /* To align text and icon */
+        align-items: center;
+        transition: color 0.3s;
+        /* Inherits border-bottom from .section-title */
     }
-    .filter-tabs button:hover, .filter-tabs button.active {
-      background: var(--primary-red);
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px var(--shadow-medium);
+
+    .section-title-wrapper:hover .section-title {
+        color: var(--dark-red);
     }
-    .filter-tabs button:active {
+
+    .section-title-wrapper .toggle-icon {
+        margin-left: 10px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .section-title-wrapper.expanded .toggle-icon {
+        transform: rotate(180deg);
+    }
+
+    .category-dropdown {
+        background: #333; /* Dark background like the reference image */
+        border: 1px solid #555;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); /* Darker shadow */
+        padding: 0.5rem 0; /* Adjusted padding */
+        position: fixed; /* Absolute positioning */
+        right: 1rem; /* Align to the right */
+        bottom: 90px; /* Above the nav bar (80px nav height + 10px gap) */
+        max-width: 250px; /* Constrain width */
+        width: 90%; /* Responsive width */
+        display: flex;
+        flex-direction: column; /* Stack buttons vertically */
+        z-index: 999; /* Higher z-index to appear over content but under nav */
+        transition: max-height 0.3s ease-out, opacity 0.3s ease-out, transform 0.3s ease-out;
+        overflow: hidden;
+        max-height: 0; /* Hidden by default for animation */
+        opacity: 0;
+        transform: translateY(10px); /* Appear from slightly below */
+        pointer-events: none; /* Prevent interaction when hidden */
+    }
+
+    .category-dropdown.show {
+        max-height: 500px; /* Sufficient height for expansion */
+        opacity: 1;
         transform: translateY(0);
-        box-shadow: 0 1px 3px var(--shadow-light);
+        pointer-events: auto; /* Enable interaction */
+    }
+
+    .category-dropdown button {
+        display: flex;
+        justify-content: space-between; /* Space out text and count */
+        align-items: center;
+        padding: 0.8rem 1.2rem; /* Generous padding for each row */
+        background: none; /* No background for buttons */
+        border: none; /* No border */
+        color: #ddd; /* Lighter text for dark background */
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s, color 0.2s;
+        border-bottom: 1px solid #444; /* Separator lines */
+        width: 100%; /* Full width */
+        box-sizing: border-box; /* Include padding in width */
+    }
+
+    .category-dropdown button:last-child {
+        border-bottom: none; /* No border for the last item */
+    }
+
+    .category-dropdown button:hover, .category-dropdown button.active {
+        background-color: #444; /* Darker hover background */
+        color: white; /* White text on hover */
+    }
+    .category-dropdown button .item-count {
+        background: #555; /* Darker badge background */
+        color: white;
+        padding: 0.2em 0.6em;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        min-width: 25px; /* Ensures consistent size for single/double digits */
+        text-align: center;
     }
 
 
@@ -638,25 +705,17 @@
         }
         .section-title {
             font-size: 1.4rem;
-            margin: 1.2rem 0 0.8rem;
+            /* margin: 1.2rem 0 0.8rem; Handled by wrapper */
         }
         .search-bar {
-            top: 4rem; /* Adjust sticky top for smaller header */
+            top: 55px; /* Adjusted sticky top for smaller header */
             padding: 0.6rem 0.8rem;
         }
         .search-bar input {
             padding: 0.7rem 1rem;
             font-size: 0.9rem;
         }
-        .filter-tabs {
-            top: 9.5rem; /* Adjust sticky top */
-            padding: 0.3rem 0;
-            gap: 0.4rem;
-        }
-        .filter-tabs button {
-            padding: 0.5rem 0.9rem;
-            font-size: 0.85rem;
-        }
+        /* Filter tabs are display: none, no need for responsive rules */
         .menu-item {
             padding: 1rem;
             margin: 1rem 0;
@@ -741,6 +800,11 @@
             font-size: 1.4rem;
             margin-right: 0.6rem;
         }
+        .category-dropdown {
+            bottom: 90px; /* Consistent positioning for smaller screens */
+            right: 0.5rem; /* Adjusted right margin */
+            max-width: 220px; /* Slightly smaller width for mobile */
+        }
     }
   </style>
 </head>
@@ -750,17 +814,24 @@
 
   <!-- MENU SECTION -->
   <div class="menu-section active" id="menu">
+    <!-- Banner Image -->
+    <img src="https://placehold.co/800x200/FF5733/FFFFFF?text=Delicious+Food+Waiting+For+You" alt="Restaurant Banner" class="banner-image">
+
     <div class="search-bar">
         <input type="text" id="search-input" placeholder="Search for dishes..." onkeyup="searchMenu()" />
     </div>
-    <div class="filter-tabs">
-      <button class="active" onclick="filterCategory('all', this)">All</button>
-      <button onclick="filterCategory('starter', this)">Starters</button>
-      <button onclick="filterCategory('main', this)">Main Course</button>
-      <button onclick="filterCategory('drink', this)">Drinks</button>
-      <button onclick="filterCategory('dessert', this)">Desserts</button>
+    <!-- Horizontal filter tabs removed -->
+
+    <!-- New clickable section title for dropdown -->
+    <div class="section-title-wrapper" onclick="toggleCategoryDropdown(this)">
+        <h2 class="section-title" id="menu-section-title">Our Delicious Menu <i class="bi bi-chevron-down toggle-icon"></i></h2>
     </div>
-    <h2 class="section-title">Our Delicious Menu</h2>
+
+    <!-- New category dropdown -->
+    <div class="category-dropdown" id="category-dropdown" style="display: none;">
+        <!-- Categories will be populated here by JavaScript -->
+    </div>
+
     <div id="menu-items-container">
       <!-- Menu items will be rendered here by JavaScript -->
     </div>
@@ -778,7 +849,7 @@
         <span id="cart-total-price">₹0.00</span>
     </div>
     <div class="cart-actions">
-        <button class="send-btn" onclick="openOrderPopup()">Proceed to Order (WhatsApp)</button>
+        <button class="send-btn" onclick="openOrderPopup()">Order via WhatsApp</button>
         <button class="clear-cart-btn" onclick="clearCart()">Clear Cart</button>
     </div>
   </div>
@@ -788,6 +859,7 @@
     <h2 class="section-title">About Deepanshu Restaurant</h2>
     <p>Welcome to <strong>Deepanshu Restaurant</strong>, where culinary excellence meets a warm and inviting atmosphere. We are passionate about serving authentic and delicious food prepared with the freshest ingredients.</p>
     <p>Our journey began with a simple goal: to create a place where friends and families can gather to enjoy great food and make lasting memories. From our savory starters to our delightful desserts, every dish is crafted with care and a touch of our unique flavor.</p>
+    <p>What makes us special:</p>
     <ul>
         <li><i class="bi bi-check-circle-fill"></i> Fresh, locally sourced ingredients.</li>
         <li><i class="bi bi-check-circle-fill"></i> A diverse menu catering to all tastes.</li>
@@ -1063,14 +1135,18 @@
     /**
      * Filters menu items by category and/or search input.
      * @param {string} category - The category to filter by ('all', 'starter', 'main', etc.).
-     * @param {HTMLElement} clickedButton - The filter button that was clicked.
+     * @param {HTMLElement} clickedButton - The button that was clicked to trigger the filter.
      */
     function filterCategory(category, clickedButton) {
-      // Update active state for filter tabs
-      document.querySelectorAll('.filter-tabs button').forEach(button => {
-        button.classList.remove('active');
+      // Deactivate all dropdown filter buttons
+      document.querySelectorAll('.category-dropdown button').forEach(btn => {
+          btn.classList.remove('active');
       });
-      clickedButton.classList.add('active');
+
+      // Activate the clicked button
+      if (clickedButton) {
+          clickedButton.classList.add('active');
+      }
 
       // Get current search input value
       const searchInputValue = document.getElementById('search-input').value.toLowerCase();
@@ -1084,11 +1160,12 @@
       // Apply search filter on top of category filter
       if (searchInputValue) {
           filteredItems = filteredItems.filter(item =>
-              item.name.toLowerCase().includes(searchInputValue) ||
-              item.description.toLowerCase().includes(searchInputValue)
+              item.name.toLowerCase().includes(searchInput) ||
+              item.description.toLowerCase().includes(searchInput)
           );
       }
       renderMenuItems(filteredItems); // Render the filtered results
+      updateMenuSectionTitle(category); // Update the menu section title
     }
 
     /**
@@ -1097,8 +1174,8 @@
      */
     function searchMenu() {
         const searchInput = document.getElementById('search-input').value.toLowerCase();
-        // Get the currently active category from filter buttons
-        const activeCategoryButton = document.querySelector('.filter-tabs button.active');
+        // Get the currently active category from filter buttons (only dropdown buttons exist now)
+        const activeCategoryButton = document.querySelector('.category-dropdown button.active');
         const currentCategory = activeCategoryButton ? activeCategoryButton.dataset.category : 'all';
 
         let filteredItems = menuItems;
@@ -1133,6 +1210,94 @@
         }, 500);
       }, 2000); // Notification remains visible for 2 seconds
     }
+
+    /**
+     * Populates the category dropdown with buttons for each category.
+     * Includes item counts for each category.
+     */
+    function populateCategoryDropdown() {
+        const dropdown = document.getElementById('category-dropdown');
+        dropdown.innerHTML = ''; // Clear existing
+        
+        // Calculate item counts for each category
+        const categoryCounts = menuItems.reduce((acc, item) => {
+            acc[item.category] = (acc[item.category] || 0) + 1;
+            return acc;
+        }, {});
+
+        const categories = [
+            {id: 'all', name: 'All'},
+            {id: 'starter', name: 'Starters'},
+            {id: 'main', name: 'Main Course'},
+            {id: 'drink', name: 'Drinks'},
+            {id: 'dessert', name: 'Desserts'}
+        ];
+
+        categories.forEach(cat => {
+            const button = document.createElement('button');
+            button.innerHTML = `
+                <span>${cat.name}</span>
+                <span class="item-count">${categoryCounts[cat.id] || 0}</span>
+            `;
+            button.dataset.category = cat.id; // Store category ID
+            button.onclick = () => {
+                filterCategory(cat.id, button); // Call filter and pass the clicked button
+                toggleCategoryDropdown(document.querySelector('.section-title-wrapper')); // Close dropdown after selection
+            };
+            dropdown.appendChild(button);
+        });
+    }
+
+    /**
+     * Updates the text of the main menu section title based on the active category.
+     * @param {string} categoryId - The ID of the currently active category.
+     */
+    function updateMenuSectionTitle(categoryId) {
+        const menuSectionTitle = document.getElementById('menu-section-title');
+        const categories = {
+            'all': 'Our Delicious Menu',
+            'starter': 'Starters',
+            'main': 'Main Course',
+            'drink': 'Drinks',
+            'dessert': 'Desserts'
+        };
+        // Get the friendly name for the category
+        const categoryName = categories[categoryId] || 'Menu'; // Fallback to 'Menu'
+        menuSectionTitle.innerHTML = `${categoryName} <i class="bi bi-chevron-down toggle-icon"></i>`;
+    }
+
+    /**
+     * Toggles the visibility of the category dropdown.
+     * @param {HTMLElement} wrapperElement - The .section-title-wrapper element that was clicked.
+     */
+    function toggleCategoryDropdown(wrapperElement) {
+        const dropdown = document.getElementById('category-dropdown');
+        if (!dropdown) return; // Defensive check
+
+        const menuSectionTitleText = document.getElementById('menu-section-title');
+
+        if (dropdown.classList.contains('show')) {
+            dropdown.classList.remove('show');
+            wrapperElement.classList.remove('expanded');
+            dropdown.style.display = 'none'; // Ensure it's fully hidden for screen readers etc.
+            // Reset title text to "Our Delicious Menu"
+            updateMenuSectionTitle(document.querySelector('.category-dropdown button.active')?.dataset.category || 'all');
+
+        } else {
+            // Ensure the correct category is active in dropdown before opening
+            const currentActiveCategory = document.querySelector('.category-dropdown button.active')?.dataset.category || 'all';
+            filterCategory(currentActiveCategory, document.querySelector(`.category-dropdown button[data-category="${currentActiveCategory}"]`));
+
+            dropdown.style.display = 'flex'; // Use flex for layout when visible
+            // Give a small delay to allow display property to apply before animation
+            setTimeout(() => {
+                dropdown.classList.add('show');
+                wrapperElement.classList.add('expanded');
+            }, 10);
+            menuSectionTitleText.innerHTML = `Select Category <i class="bi bi-chevron-up toggle-icon"></i>`; // Change text when open
+        }
+    }
+
 
     /**
      * Opens the order details popup.
@@ -1201,15 +1366,30 @@
 
     // Initial setup when the DOM is fully loaded
     document.addEventListener('DOMContentLoaded', () => {
+        // Populate the new dropdown first, so its buttons are available
+        populateCategoryDropdown();
+
+        // Then render menu and cart
         renderMenuItems(menuItems); // Render all menu items initially
         renderCartItems(); // Render cart items
 
         // Ensure the menu section is active on initial load
         navigate('menu');
 
-        // Assign data-category to filter buttons for easier JavaScript access
-        document.querySelectorAll('.filter-tabs button').forEach(button => {
-            button.dataset.category = button.textContent.toLowerCase().replace(' ', '');
+        // Set initial active state for 'All' category for dropdown buttons
+        filterCategory('all', document.querySelector('.category-dropdown button[data-category="all"]'));
+
+
+        // Close dropdown if clicked outside
+        document.addEventListener('click', (event) => {
+            const dropdown = document.getElementById('category-dropdown');
+            const wrapper = document.querySelector('.section-title-wrapper');
+            // Check if the click is outside both the dropdown and its toggle wrapper
+            if (dropdown && wrapper && !wrapper.contains(event.target) && !dropdown.contains(event.target)) {
+                if (dropdown.classList.contains('show')) {
+                    toggleCategoryDropdown(wrapper);
+                }
+            }
         });
     });
   </script>
