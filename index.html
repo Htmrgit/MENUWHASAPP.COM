@@ -901,14 +901,20 @@
     function renderCartItems() {
       const cartItemsContainer = document.getElementById('cart-items');
       const cartTotalPrice = document.getElementById('cart-total-price');
-      const cartEmptyMessage = document.getElementById('cart-empty-message');
-      cartItemsContainer.innerHTML = ''; // Clear existing cart items
+      const cartEmptyMessage = document.getElementById('cart-empty-message'); // Get the element
+
+      // Clear existing cart items
+      cartItemsContainer.innerHTML = '';
 
       if (cart.length === 0) {
-        cartEmptyMessage.style.display = 'block'; // Show empty message
+        if (cartEmptyMessage) { // Null check for cartEmptyMessage
+            cartEmptyMessage.style.display = 'block'; // Show empty message
+        }
         cartTotalPrice.textContent = `₹0.00`; // Reset total price
       } else {
-        cartEmptyMessage.style.display = 'none'; // Hide empty message
+        if (cartEmptyMessage) { // Null check for cartEmptyMessage
+            cartEmptyMessage.style.display = 'none'; // Hide empty message
+        }
         let total = 0;
         // Iterate through cart items and create HTML for each
         cart.forEach(item => {
