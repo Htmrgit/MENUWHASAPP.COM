@@ -456,21 +456,32 @@
     }
     .cart-actions {
         display: flex;
-        flex-direction: column;
-        gap: 1rem;
+        /* Changed to row for side-by-side buttons */
+        flex-direction: row; 
+        justify-content: space-between; /* Space out buttons */
+        gap: 1rem; /* Space between buttons */
         margin-top: 1.5rem;
     }
     .send-btn, .clear-cart-btn {
       color: white;
       border: none;
       padding: 0.9rem;
-      width: 100%;
+      /* Adjusted width to allow side-by-side, but still responsive */
+      flex: 1; /* Allow buttons to grow and shrink */
+      min-width: 48%; /* Ensure they don't get too small */
       border-radius: 10px;
       font-size: 1.1rem;
       font-weight: 600;
       cursor: pointer;
       transition: background 0.2s, transform 0.1s;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      /* Ensure they are always visible */
+      display: block; 
+      opacity: 1;
+      visibility: visible;
+    }
+    .send-btn {
+        background: var(--success-green);
     }
     .send-btn:hover {
       background: var(--dark-green);
@@ -882,6 +893,7 @@
         .send-btn, .clear-cart-btn {
             font-size: 1.05rem;
             padding: 0.7rem;
+            min-width: unset; /* Remove min-width for very small screens if needed */
         }
         .popup-content {
             padding: 1.5rem;
@@ -933,6 +945,9 @@
         .variant-item-option-price {
             font-size: 1rem;
             margin-left: 1rem;
+        }
+        .cart-actions {
+            flex-direction: column; /* Stack buttons vertically again on very small screens */
         }
     }
   </style>
