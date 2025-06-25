@@ -346,28 +346,40 @@
       font-size: 1.2rem; /* More prominent price */
       align-self: flex-start; /* Align price to the left */
     }
-    .menu-item button {
-      background: var(--success-green);
-      color: white;
-      border: none;
-      padding: 0.7rem 1.5rem; /* More padding */
-      border-radius: 10px; /* Rounded buttons */
-      cursor: pointer;
-      margin-top: 1rem;
-      font-size: 1rem;
-      font-weight: 600;
-      align-self: flex-end; /* Align button to the right */
-      transition: background 0.2s ease-in-out, transform 0.1s;
-      box-shadow: 0 3px 10px rgba(0, 128, 0, 0.2); /* Green shadow for add to cart */
+    /* Styles for the inline variant buttons */
+    .variant-options-inline {
+        display: flex;
+        flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        gap: 0.5rem; /* Space between buttons */
+        margin-top: 0.8rem;
     }
-    .menu-item button:hover {
-      background: var(--dark-green);
-      transform: translateY(-2px);
+
+    .variant-inline-btn {
+        background: var(--primary-red);
+        color: white;
+        border: 1px solid var(--primary-red);
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: background 0.2s ease-in-out, border-color 0.2s ease-in-out, transform 0.1s;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        flex-grow: 1; /* Allow buttons to expand */
+        text-align: center;
+        white-space: nowrap; /* Prevent text wrapping within button */
     }
-    .menu-item button:active {
+
+    .variant-inline-btn:hover {
+        background: var(--dark-red);
+        border-color: var(--dark-red);
+        transform: translateY(-2px);
+    }
+    .variant-inline-btn:active {
         transform: translateY(0);
-        box-shadow: 0 1px 3px rgba(0, 128, 0, 0.1);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
+
 
     /* Cart Section */
     .cart-section {
@@ -475,10 +487,10 @@
       cursor: pointer;
       transition: background 0.2s, transform 0.1s;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      /* Ensure they are always visible */
-      display: block; 
-      opacity: 1;
-      visibility: visible;
+      /* Ensure they are always visible, overriding any potential hover-only states */
+      display: block !important; 
+      opacity: 1 !important;
+      visibility: visible !important;
     }
     .send-btn {
         background: var(--success-green);
@@ -606,94 +618,9 @@
         box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
 
-    /* Variant Selection Modal */
-    .variant-popup .popup-content {
-        max-width: 350px; /* Smaller for variants */
-    }
-    .variant-selection-group {
-        margin-bottom: 1rem;
-        padding: 0.5rem;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        background-color: var(--background-medium);
-    }
-    .variant-selection-group h4 {
-        margin-top: 0;
-        margin-bottom: 0.5rem;
-        color: var(--primary-red);
-        font-size: 1.1rem;
-    }
-    .variant-item-option {
-        display: flex;
-        align-items: center;
-        padding: 0.8rem 1rem; /* Increased padding for touch targets */
-        margin-bottom: 0.6rem; /* More spacing between options */
-        border: 2px solid var(--border-color); /* Thicker border for better visual separation */
-        border-radius: 12px; /* More rounded */
-        cursor: pointer;
-        transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.1s;
-        background-color: white;
-    }
-    .variant-item-option:hover {
-        background-color: #f8f8f8;
-        transform: translateY(-2px); /* Slight lift on hover */
-        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-    }
-    .variant-item-option.selected {
-        border-color: var(--primary-red);
-        background-color: var(--light-red); /* Lighter red for selected state */
-        box-shadow: 0 0 0 3px var(--primary-red); /* Stronger accent for selection */
-        transform: translateY(0); /* Reset lift if selected while hovering */
-    }
-    .variant-item-option input[type="radio"] {
-        margin-right: 1rem; /* More space for radio button */
-        accent-color: var(--primary-red); /* Style checkbox/radio */
-        width: 18px; /* Larger radio button */
-        height: 18px;
-    }
-    .variant-item-option-info {
-        flex-grow: 1;
-    }
-    .variant-item-option-info .name {
-        font-weight: 700; /* Bolder name */
-        color: var(--text-dark);
-        font-size: 1.1rem; /* Slightly larger font */
-    }
-    .variant-item-option-info .description {
-        font-size: 0.9rem; /* Slightly larger description */
-        color: var(--text-medium);
-        margin-top: 0.2rem;
-    }
-    .variant-item-option-price {
-        font-weight: 700;
-        color: var(--primary-red);
-        font-size: 1.1rem; /* Larger price */
-        margin-left: 1.5rem; /* More spacing */
-        flex-shrink: 0; /* Prevent shrinking */
-    }
-    .variant-add-to-cart-btn {
-        background: var(--success-green);
-        color: white;
-        border: none;
-        padding: 0.8rem 1.5rem;
-        border-radius: 10px;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.2s, transform 0.1s;
-        box-shadow: 0 3px 10px rgba(0, 128, 0, 0.2);
-        width: 100%; /* Full width button */
-    }
-    .variant-add-to-cart-btn:hover {
-        background: var(--dark-green);
-        transform: translateY(-2px);
-    }
-    .variant-add-to-cart-btn:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-        box-shadow: none;
-        transform: none;
-    }
+    /* Variant Selection Modal (No longer used for selection, but keeping styles if structure is reused) */
+    /* .variant-popup { display: none !important; } /* Ensure it's hidden */
+    /* Keeping .variant-item-option styles if they are re-purposed for other selections in the future */
 
 
     /* Notification */
@@ -853,9 +780,10 @@
         .menu-item .price {
             font-size: 1.1rem;
         }
-        .menu-item button {
-            padding: 0.6rem 1.2rem;
-            font-size: 0.95rem;
+        /* Adjusted inline variant buttons for smaller screens */
+        .variant-inline-btn {
+            padding: 0.5rem 0.8rem;
+            font-size: 0.85rem;
         }
         .cart-item {
             flex-direction: column;
@@ -926,26 +854,7 @@
             right: 0.5rem; /* Adjusted right margin */
             max-width: 220px; /* Slightly smaller width for mobile */
         }
-        .variant-item-option {
-            padding: 0.7rem 0.8rem; /* Adjusted padding for smaller screens */
-            margin-bottom: 0.5rem;
-            border-radius: 10px;
-        }
-        .variant-item-option input[type="radio"] {
-            width: 16px;
-            height: 16px;
-            margin-right: 0.8rem;
-        }
-        .variant-item-option-info .name {
-            font-size: 1rem;
-        }
-        .variant-item-option-info .description {
-            font-size: 0.8rem;
-        }
-        .variant-item-option-price {
-            font-size: 1rem;
-            margin-left: 1rem;
-        }
+        /* No variant-item-option styles needed as popup is removed */
         .cart-actions {
             flex-direction: column; /* Stack buttons vertically again on very small screens */
         }
@@ -1058,17 +967,16 @@
     </div>
   </div>
 
-  <!-- Variant Selection Popup -->
-  <div class="popup variant-popup" id="variant-selection-popup">
+  <!-- Removed Variant Selection Popup as it's now inline -->
+  <!-- <div class="popup variant-popup" id="variant-selection-popup">
     <div class="popup-content">
       <h3 id="variant-item-name">Select Option</h3>
       <div id="variant-options-container">
-        <!-- Variant options will be loaded here -->
       </div>
       <button class="variant-add-to-cart-btn" id="add-variant-to-cart-btn" disabled onclick="addSelectedVariantToCart()">Add to Cart</button>
       <button class="close-popup-btn" onclick="closeVariantSelectionModal()">Cancel</button>
     </div>
-  </div>
+  </div> -->
 
   <!-- Fixed Navigation Bar -->
   <div class="nav">
@@ -1086,8 +994,8 @@
 
     let cart = JSON.parse(localStorage.getItem('deepanshuCart')) || [];
     let menuItems = []; // This will be populated from Google Sheet
-    let selectedItemForVariant = null; // To store the item being configured
-    let selectedVariantOption = null; // To store the chosen variant option (price, name, description etc)
+    // let selectedItemForVariant = null; // No longer needed as variant selection is inline
+    // let selectedVariantOption = null; // No longer needed as variant selection is inline
 
     /**
      * Fetches menu items from the Google Apps Script Web App.
@@ -1194,32 +1102,31 @@
         }
 
 
-        let buttonHtml = '';
-        let priceDisplay = '';
+        let buttonsAndPriceHtml = '';
 
         if (item.hasVariants && item.variants && item.variants.length > 0) {
-            // Find the minimum price among all variant options
-            let minPrice = Infinity;
-            item.variants.forEach(variantGroup => {
-                if (variantGroup.options) {
-                    variantGroup.options.forEach(option => {
-                        if (option.price < minPrice) {
-                            minPrice = option.price;
-                        }
-                    });
-                }
+            // Display all variant options as inline buttons
+            buttonsAndPriceHtml += `<div class="variant-options-inline">`;
+            // Assuming one main variant group for simplicity based on the provided Apps Script structure
+            item.variants[0].options.forEach(option => { 
+                buttonsAndPriceHtml += `<button class="variant-inline-btn" 
+                                           onclick="addToCart('${item.id}', { 
+                                               variantName: '${item.variants[0].variant}', 
+                                               optionName: '${option.name}', 
+                                               price: ${option.price}, 
+                                               description: '${option.description || item.description}' 
+                                           })">
+                                ${option.name} - ₹${option.price.toFixed(2)}
+                              </button>`;
             });
-            
-            if (minPrice !== Infinity) {
-                priceDisplay = `<p class="price">From ₹${minPrice.toFixed(2)}</p>`;
-            }
-            buttonHtml = `<button onclick="openVariantSelectionModal('${item.id}')">Select Options</button>`;
+            buttonsAndPriceHtml += `</div>`;
+            // Price display is handled by each variant button, so no separate price section here
         } else {
             // For non-variant items, display their direct price and add-to-cart button
             if (item.price !== undefined && item.price !== null && !isNaN(item.price)) {
-                priceDisplay = `<p class="price">₹${item.price.toFixed(2)}</p>`;
+                buttonsAndPriceHtml += `<p class="price">₹${item.price.toFixed(2)}</p>`;
             }
-            buttonHtml = `<button onclick="addToCart('${item.id}')">Add to Cart</button>`;
+            buttonsAndPriceHtml += `<button onclick="addToCart('${item.id}')">Add to Cart</button>`;
         }
 
 
@@ -1227,8 +1134,7 @@
           ${imageHtml}
           <h3>${item.name}</h3>
           <p>${item.description || ''}</p>
-          ${priceDisplay}
-          ${buttonHtml}
+          ${buttonsAndPriceHtml}
         `;
         menuContainer.appendChild(menuItemDiv);
 
@@ -1241,7 +1147,7 @@
             if (dotsContainer && imageElement) {
                 dotsContainer.addEventListener('click', (e) => {
                     if (e.target.classList.contains('image-dot')) {
-                        const newIndex = parseInt(e.target.dataset.imageIndex);
+                        const newIndex = parseInt(e.target.dataset.image-index);
                         imageElement.src = item.images[newIndex];
                         imageElement.dataset.currentImageIndex = newIndex;
 
@@ -1621,10 +1527,10 @@
         }
     }
 
-    /**
-     * Opens the variant selection modal for an item.
-     * @param {string} itemId - The ID of the item for which to select variants.
-     */
+    // These functions (openVariantSelectionModal, addSelectedVariantToCart, closeVariantSelectionModal)
+    // are no longer directly used as variant selection is now inline.
+    // Keeping them commented out in case future changes require a modal again or parts of their logic.
+    /*
     function openVariantSelectionModal(itemId) {
         selectedItemForVariant = menuItems.find(item => item.id === itemId);
         if (!selectedItemForVariant || !selectedItemForVariant.hasVariants || !selectedItemForVariant.variants || selectedItemForVariant.variants.length === 0) {
@@ -1638,14 +1544,11 @@
         selectedVariantOption = null; // Reset selection
         document.getElementById('add-variant-to-cart-btn').disabled = true; // Disable button initially
 
-        // Render variants and their options
         selectedItemForVariant.variants.forEach((variantGroup, variantGroupIndex) => {
-            // In this new structure, there's usually only one variantGroup named "Options" from Apps Script
-            // We'll iterate through its options directly.
             if (variantGroup.options) {
                 const groupDiv = document.createElement('div');
                 groupDiv.classList.add('variant-selection-group');
-                groupDiv.innerHTML = `<h4>${variantGroup.variant}</h4>`; // E.g., "Options"
+                groupDiv.innerHTML = `<h4>${variantGroup.variant}</h4>`;
 
                 variantGroup.options.forEach((option, optionIndex) => {
                     const optionDiv = document.createElement('label');
@@ -1661,7 +1564,7 @@
                         <span class="variant-item-option-price">₹${option.price.toFixed(2)}</span>
                     `;
                     optionDiv.addEventListener('click', (e) => {
-                        if (e.target.tagName !== 'INPUT') { // Avoid double click if input itself is clicked
+                        if (e.target.tagName !== 'INPUT') {
                             optionDiv.querySelector('input[type="radio"]').checked = true;
                             optionDiv.querySelector('input[type="radio"]').dispatchEvent(new Event('change'));
                         }
@@ -1672,8 +1575,6 @@
             }
         });
 
-        // Add a single event listener to the container for all radio button changes
-        // Using event delegation for efficiency and to handle dynamically added radios
         optionsContainer.addEventListener('change', (event) => {
             if (event.target.type === 'radio' && event.target.name === `${selectedItemForVariant.id}_variant_option`) {
                 optionsContainer.querySelectorAll('.variant-item-option').forEach(label => {
@@ -1688,21 +1589,18 @@
                 const chosenOption = selectedItemForVariant.variants[variantGroupIndex].options[optionIndex];
 
                 selectedVariantOption = {
-                    variantName: selectedItemForVariant.variants[variantGroupIndex].variant, // E.g., "Options"
-                    optionName: chosenOption.name, // E.g., "FULL - 1500ML"
+                    variantName: selectedItemForVariant.variants[variantGroupIndex].variant,
+                    optionName: chosenOption.name,
                     price: chosenOption.price,
                     description: chosenOption.description
                 };
-                document.getElementById('add-variant-to-cart-btn').disabled = false; // Enable button
+                document.getElementById('add-variant-to-cart-btn').disabled = false;
             }
-        }, {once: false}); // The {once: false} is explicitly shown for clarity, but it's default behavior.
+        }, {once: false});
 
         document.getElementById('variant-selection-popup').classList.add('show');
     }
 
-    /**
-     * Adds the selected variant option to the cart.
-     */
     function addSelectedVariantToCart() {
         if (!selectedVariantOption) {
             showNotification('Please select an option first.', 'var(--warning-orange)');
@@ -1710,18 +1608,16 @@
         }
 
         addToCart(selectedItemForVariant.id, selectedVariantOption);
-        closeVariantSelectionModal(); // Close modal after adding to cart
+        closeVariantSelectionModal();
     }
 
-    /**
-     * Closes the variant selection modal.
-     */
     function closeVariantSelectionModal() {
         document.getElementById('variant-selection-popup').classList.remove('show');
         selectedItemForVariant = null;
         selectedVariantOption = null;
-        document.getElementById('add-variant-to-cart-btn').disabled = true; // Re-disable button
+        document.getElementById('add-variant-to-cart-btn').disabled = true;
     }
+    */
 
 
     /**
@@ -1804,7 +1700,6 @@
             const wrapper = document.querySelector('.section-title-wrapper');
             // Check if the click is outside both the dropdown and its toggle wrapper
             // Also check if the click is outside the popup itself (if open)
-            const variantPopup = document.getElementById('variant-selection-popup');
             const orderPopup = document.getElementById('order-popup');
 
             if (dropdown && wrapper && !wrapper.contains(event.target) && !dropdown.contains(event.target)) {
@@ -1813,9 +1708,6 @@
                 }
             }
             // If a popup is open and click is outside its content, close it
-            if (variantPopup && variantPopup.classList.contains('show') && !variantPopup.querySelector('.popup-content').contains(event.target)) {
-                closeVariantSelectionModal();
-            }
             if (orderPopup && orderPopup.classList.contains('show') && !orderPopup.querySelector('.popup-content').contains(event.target)) {
                 closeOrderPopup();
             }
