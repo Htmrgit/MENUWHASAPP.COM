@@ -52,6 +52,8 @@
       font-weight: 700; /* Bolder text */
       position: sticky;
       top: 0;
+      left: 0;
+      right: 0;
       z-index: 1000;
       box-shadow: 0 4px 15px var(--shadow-medium); /* More pronounced shadow */
       letter-spacing: 0.05em; /* Slight letter spacing */
@@ -199,7 +201,7 @@
         border-radius: 12px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); /* Darker shadow */
         padding: 0.5rem 0; /* Adjusted padding */
-        position: fixed; /* Absolute positioning */
+        position: fixed; /* Fixed positioning */
         right: 1rem; /* Align to the right */
         bottom: 90px; /* Above the nav bar (80px nav height + 10px gap) */
         max-width: 250px; /* Constrain width */
@@ -430,10 +432,6 @@
       transition: background 0.2s, transform 0.1s;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
-    .send-btn {
-      background: var(--success-green);
-      box-shadow: 0 4px 12px rgba(0, 128, 0, 0.2);
-    }
     .send-btn:hover {
       background: var(--dark-green);
       transform: translateY(-2px);
@@ -450,111 +448,6 @@
         transform: translateY(0);
         box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
-
-
-    /* About Section */
-    .about-section {
-        padding: 1rem;
-        line-height: 1.7;
-    }
-    .about-section h2 {
-        color: var(--primary-red);
-        font-size: 1.8rem;
-        font-weight: 700;
-        margin-bottom: 1.2rem;
-        text-align: center;
-    }
-    .about-section p {
-        margin-bottom: 1rem;
-        color: var(--text-medium);
-        font-size: 1rem;
-    }
-    .about-section ul {
-        list-style: none;
-        padding: 0;
-        margin-top: 1.5rem;
-    }
-    .about-section ul li {
-        margin-bottom: 0.8rem;
-        color: var(--text-dark);
-        font-size: 1rem;
-        display: flex;
-        align-items: flex-start;
-    }
-    .about-section ul li i {
-        color: var(--success-green); /* Green checkmarks */
-        margin-right: 0.8rem;
-        font-size: 1.2rem;
-        padding-top: 2px;
-    }
-
-    /* Order Online Page Styling */
-    .order-online-section {
-        padding: 1.5rem 1rem;
-        text-align: center;
-    }
-
-    .order-online-section .section-title {
-        margin-top: 0.5rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .order-button-group {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem; /* Space between buttons */
-        max-width: 400px; /* Max width for buttons */
-        margin: 0 auto; /* Center the button group */
-    }
-
-    .order-button-group a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1rem 1.5rem;
-        border-radius: 12px;
-        font-size: 1.1rem;
-        font-weight: 600;
-        text-decoration: none;
-        color: white;
-        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    }
-
-    .order-button-group a:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .order-button-group a i {
-        font-size: 1.6rem; /* Larger icons for these prominent buttons */
-        margin-right: 0.8rem;
-    }
-
-    .order-button-whatsapp {
-        background: #25d366; /* WhatsApp Green */
-    }
-
-    .order-button-whatsapp:hover {
-        background: #128C7E; /* Darker WhatsApp Green */
-    }
-
-    .order-button-zomato {
-        background: #E4002B; /* Zomato Red */
-    }
-
-    .order-button-zomato:hover {
-        background: #A0001D; /* Darker Zomato Red */
-    }
-
-    .order-button-swiggy {
-        background: #FC8019; /* Swiggy Orange */
-    }
-
-    .order-button-swiggy:hover {
-        background: #DB6900; /* Darker Swiggy Orange */
-    }
-
 
     /* Popup */
     .popup {
@@ -662,6 +555,87 @@
         box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
 
+    /* Variant Selection Modal */
+    .variant-popup .popup-content {
+        max-width: 350px; /* Smaller for variants */
+    }
+    .variant-selection-group {
+        margin-bottom: 1rem;
+        padding: 0.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background-color: var(--background-medium);
+    }
+    .variant-selection-group h4 {
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        color: var(--primary-red);
+        font-size: 1.1rem;
+    }
+    .variant-item-option {
+        display: flex;
+        align-items: center;
+        padding: 0.6rem 0.8rem;
+        margin-bottom: 0.4rem;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+        background-color: var(--background-light);
+    }
+    .variant-item-option:hover {
+        background-color: #f5f5f5;
+    }
+    .variant-item-option.selected {
+        border-color: var(--primary-red);
+        background-color: var(--light-red);
+        box-shadow: 0 0 0 2px var(--light-red);
+    }
+    .variant-item-option input[type="radio"] {
+        margin-right: 0.8rem;
+        accent-color: var(--primary-red); /* Style checkbox/radio */
+    }
+    .variant-item-option-info {
+        flex-grow: 1;
+    }
+    .variant-item-option-info .name {
+        font-weight: 600;
+        color: var(--text-dark);
+    }
+    .variant-item-option-info .description {
+        font-size: 0.85rem;
+        color: var(--text-medium);
+    }
+    .variant-item-option-price {
+        font-weight: 700;
+        color: var(--primary-red);
+        font-size: 1rem;
+        margin-left: 1rem;
+    }
+    .variant-add-to-cart-btn {
+        background: var(--success-green);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.1s;
+        box-shadow: 0 3px 10px rgba(0, 128, 0, 0.2);
+        width: 100%; /* Full width button */
+    }
+    .variant-add-to-cart-btn:hover {
+        background: var(--dark-green);
+        transform: translateY(-2px);
+    }
+    .variant-add-to-cart-btn:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+    }
+
 
     /* Notification */
     #notification {
@@ -687,6 +661,38 @@
         from { opacity: 1; transform: translateX(-50%) translateY(0); }
         to { opacity: 0; transform: translateX(-50%) translateY(-30px); }
     }
+
+    /* Loading Indicator */
+    #loading-indicator {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 1.5rem 2.5rem;
+        border-radius: 12px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        z-index: 3001;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    }
+    .spinner {
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid #fff;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
 
     /* Mobile Responsiveness - fine-tuning */
     @media (max-width: 600px) {
@@ -832,6 +838,12 @@
         <!-- Categories will be populated here by JavaScript -->
     </div>
 
+    <!-- Loading Indicator -->
+    <div id="loading-indicator" style="display: none;">
+        <div class="spinner"></div>
+        <span>Loading Menu...</span>
+    </div>
+
     <div id="menu-items-container">
       <!-- Menu items will be rendered here by JavaScript -->
     </div>
@@ -859,7 +871,6 @@
     <h2 class="section-title">About Deepanshu Restaurant</h2>
     <p>Welcome to <strong>Deepanshu Restaurant</strong>, where culinary excellence meets a warm and inviting atmosphere. We are passionate about serving authentic and delicious food prepared with the freshest ingredients.</p>
     <p>Our journey began with a simple goal: to create a place where friends and families can gather to enjoy great food and make lasting memories. From our savory starters to our delightful desserts, every dish is crafted with care and a touch of our unique flavor.</p>
-    <p>What makes us special:</p>
     <ul>
         <li><i class="bi bi-check-circle-fill"></i> Fresh, locally sourced ingredients.</li>
         <li><i class="bi bi-check-circle-fill"></i> A diverse menu catering to all tastes.</li>
@@ -877,10 +888,12 @@
       <a href="https://wa.me/919910109626?text=I want to order food" target="_blank" class="order-button-whatsapp">
         <i class="bi bi-whatsapp"></i> Order via WhatsApp
       </a>
-      <a href="https://www.zomato.com/restaurants/deepanshu-restaurant" target="_blank" class="order-button-zomato">
+      <!-- Replace with your actual Zomato profile URL -->
+      <a href="https://www.zomato.com/your-restaurant-profile" target="_blank" class="order-button-zomato">
         <i class="bi bi-shop"></i> Order on Zomato
       </a>
-      <a href="https://www.swiggy.com/restaurants/deepanshu-restaurant" target="_blank" class="order-button-swiggy">
+      <!-- Replace with your actual Swiggy profile URL -->
+      <a href="https://www.swiggy.com/your-restaurant-profile" target="_blank" class="order-button-swiggy">
         <i class="bi bi-shop"></i> Order on Swiggy
       </a>
     </div>
@@ -907,6 +920,18 @@
     </div>
   </div>
 
+  <!-- Variant Selection Popup -->
+  <div class="popup variant-popup" id="variant-selection-popup">
+    <div class="popup-content">
+      <h3 id="variant-item-name">Select Option</h3>
+      <div id="variant-options-container">
+        <!-- Variant options will be loaded here -->
+      </div>
+      <button class="variant-add-to-cart-btn" id="add-variant-to-cart-btn" disabled onclick="addSelectedVariantToCart()">Add to Cart</button>
+      <button class="close-popup-btn" onclick="closeVariantSelectionModal()">Cancel</button>
+    </div>
+  </div>
+
   <!-- Fixed Navigation Bar -->
   <div class="nav">
     <button id="menu-nav-btn" class="active" onclick="navigate('menu', this)"><i class="bi bi-card-list"></i>Menu</button>
@@ -918,24 +943,77 @@
   </div>
 
   <script>
-    // Initialize cart from localStorage, or an empty array if not found
-    let cart = JSON.parse(localStorage.getItem('deepanshuCart')) || [];
+    // ** IMPORTANT: Replace with your deployed Google Apps Script Web App URL **
+    const APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxOzS09pynwazXYrcubx3RLDKmNb-9tyjdc1zQAhlRW4JqLMjNXhI8daGjOemazD2pe/exec'; 
 
-    // Define menu items with more descriptive details and categories
-    const menuItems = [
-      { id: 1, name: 'Paneer Tikka', description: 'Cubes of cottage cheese marinated in aromatic spices and grilled to perfection.', price: 250.00, category: 'starter', image: 'https://placehold.co/300x180/FFD700/FFFFFF?text=Paneer+Tikke' },
-      { id: 2, name: 'Dal Makhani', description: 'Creamy black lentils cooked slowly overnight with butter, cream, and traditional spices.', price: 300.00, category: 'main', image: 'https://placehold.co/300x180/8B4513/FFFFFF?text=Dal+Makhani' },
-      { id: 3, name: 'Butter Chicken', description: 'Tender chicken pieces simmered in a rich, buttery tomato gravy with a hint of sweetness.', price: 380.00, category: 'main', image: 'https://placehold.co/300x180/FF6347/FFFFFF?text=Butter+Chicken' },
-      { id: 4, name: 'Veg Biryani', description: 'Fragrant basmati rice layered with assorted fresh vegetables and exotic Indian spices, served with raita.', price: 280.00, category: 'main', image: 'https://placehold.co/300x180/9ACD32/FFFFFF?text=Veg+Biryani' },
-      { id: 5, name: 'Gulab Jamun (2 Pcs)', description: 'Classic Indian dessert: deep-fried milk-solids dumplings, soaked in rose-flavored sugar syrup.', price: 120.00, category: 'dessert', image: 'https://placehold.co/300x180/FFC0CB/FFFFFF?text=Gulab+Jamun' },
-      { id: 6, name: 'Masala Dosa', description: 'Crispy, thin rice crepe filled with a savory, spiced potato masala, served with sambar and chutneys.', price: 180.00, category: 'starter', image: 'https://placehold.co/300x180/F0E68C/FFFFFF?text=Masala+Dosa' },
-      { id: 7, name: 'Fresh Lime Soda', description: 'A refreshing mix of fresh lime juice, sugar (or salt), and sparkling soda, perfect for hot days.', price: 80.00, category: 'drink', image: 'https://placehold.co/300x180/ADD8E6/FFFFFF?text=Lime+Soda' },
-      { id: 8, name: 'Chicken Tikka', description: 'Succulent boneless chicken pieces marinated in yogurt and spices, char-grilled to perfection.', price: 320.00, category: 'starter', image: 'https://placehold.co/300x180/FF8C00/FFFFFF?text=Chicken+Tikke' },
-      { id: 9, name: 'Naan', description: 'Soft, fluffy, leavened flatbread baked in a tandoor, a perfect accompaniment to any curry.', price: 50.00, category: 'main', image: 'https://placehold.co/300x180/D2B48C/FFFFFF?text=Naan' },
-      { id: 10, name: 'Chocolate Brownie with Ice Cream', description: 'Warm, fudgy chocolate brownie served with a scoop of creamy vanilla ice cream, drizzled with chocolate sauce.', price: 180.00, category: 'dessert', image: 'https://placehold.co/300x180/A0522D/FFFFFF?text=Brownie' },
-      { id: 11, name: 'Mango Lassi', description: 'A creamy and sweet blend of fresh mango pulp and yogurt, a popular Indian beverage.', price: 100.00, category: 'drink', image: 'https://placehold.co/300x180/FFCC99/FFFFFF?text=Mango+Lassi' },
-      { id: 12, name: 'Vegetable Spring Rolls', description: 'Crispy fried rolls filled with finely chopped vegetables, served with sweet chili sauce.', price: 200.00, category: 'starter', image: 'https://placehold.co/300x180/E0BBE4/FFFFFF?text=Spring+Rolls' },
-    ];
+    let cart = JSON.parse(localStorage.getItem('deepanshuCart')) || [];
+    let menuItems = []; // This will be populated from Google Sheet
+    let selectedItemForVariant = null; // To store the item being configured
+    let selectedVariantOption = null; // To store the chosen variant option (price, name, description etc)
+
+    /**
+     * Fetches menu items from the Google Apps Script Web App.
+     */
+    async function fetchMenuItems() {
+        const loadingIndicator = document.getElementById('loading-indicator');
+        loadingIndicator.style.display = 'flex'; // Show loading indicator
+
+        try {
+            const response = await fetch(APPS_SCRIPT_WEB_APP_URL);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const result = await response.json();
+            if (result.data) {
+                menuItems = result.data;
+                // Pre-process items for easier use (e.g., ensure images is an array, category is lowercase)
+                menuItems = menuItems.map(item => {
+                    // Ensure 'images' is an array, even if it's single or undefined
+                    if (!item.images) {
+                        item.images = [];
+                    } else if (!Array.isArray(item.images)) {
+                        // This case handles if Apps Script sends a single string,
+                        // but it should already be an array due to the Apps Script parsing
+                        item.images = [item.images];
+                    }
+
+                    // Ensure category is lowercase for consistent filtering
+                    if (item.category) {
+                        item.category = item.category.toLowerCase();
+                    }
+
+                    // For items with variants, ensure their prices are parsed as float
+                    // The Apps Script now parses them into a 'variants' array of objects
+                    if (item.hasVariants && item.variants && item.variants.length > 0) {
+                        item.variants = item.variants.map(variantGroup => {
+                            if (variantGroup.options) {
+                                variantGroup.options = variantGroup.options.map(option => {
+                                    if (option.price) {
+                                        option.price = parseFloat(option.price);
+                                    }
+                                    return option;
+                                });
+                            }
+                            return variantGroup;
+                        });
+                    } else if (item.price) { // For non-variant items, parse their base price
+                        item.price = parseFloat(item.price);
+                    }
+                    return item;
+                });
+                renderMenuItems(menuItems); // Render all menu items after fetching
+                populateCategoryDropdown(); // Re-populate dropdown with fetched categories
+            } else if (result.error) {
+                console.error("Error from Apps Script:", result.error);
+                showNotification(`Error loading menu: ${result.error}`, '#f44336');
+            }
+        } catch (error) {
+            console.error('Could not fetch menu items:', error);
+            showNotification('Failed to load menu. Please try again later.', '#f44336');
+        } finally {
+            loadingIndicator.style.display = 'none'; // Hide loading indicator
+        }
+    }
 
     /**
      * Renders menu items into the menu items container based on the provided array.
@@ -955,12 +1033,45 @@
       itemsToRender.forEach(item => {
         const menuItemDiv = document.createElement('div');
         menuItemDiv.classList.add('menu-item');
+        
+        // Use the first image if multiple images are provided, or a placeholder
+        const imageUrl = (item.images && item.images.length > 0) ? item.images[0] : 'https://placehold.co/300x180/cccccc/000000?text=Image+Not+Found';
+
+        let buttonHtml = '';
+        let priceDisplay = '';
+
+        if (item.hasVariants && item.variants && item.variants.length > 0) {
+            // Find the minimum price among all variant options
+            let minPrice = Infinity;
+            item.variants.forEach(variantGroup => {
+                if (variantGroup.options) {
+                    variantGroup.options.forEach(option => {
+                        if (option.price < minPrice) {
+                            minPrice = option.price;
+                        }
+                    });
+                }
+            });
+            
+            if (minPrice !== Infinity) {
+                priceDisplay = `<p class="price">From ₹${minPrice.toFixed(2)}</p>`;
+            }
+            buttonHtml = `<button onclick="openVariantSelectionModal('${item.id}')">Select Options</button>`;
+        } else {
+            // For non-variant items, display their direct price and add-to-cart button
+            if (item.price !== undefined && item.price !== null && !isNaN(item.price)) {
+                priceDisplay = `<p class="price">₹${item.price.toFixed(2)}</p>`;
+            }
+            buttonHtml = `<button onclick="addToCart('${item.id}')">Add to Cart</button>`;
+        }
+
+
         menuItemDiv.innerHTML = `
-          <img src="${item.image}" alt="${item.name}" onerror="this.onerror=null;this.src='https://placehold.co/300x180/cccccc/000000?text=Image+Not+Found';" />
+          <img src="${imageUrl}" alt="${item.name}" onerror="this.onerror=null;this.src='https://placehold.co/300x180/cccccc/000000?text=Image+Not+Found';" />
           <h3>${item.name}</h3>
-          <p>${item.description}</p>
-          <p class="price">₹${item.price.toFixed(2)}</p>
-          <button onclick="addToCart(${item.id})">Add to Cart</button>
+          <p>${item.description || ''}</p>
+          ${priceDisplay}
+          ${buttonHtml}
         `;
         menuContainer.appendChild(menuItemDiv);
       });
@@ -973,72 +1084,98 @@
     function renderCartItems() {
       const cartItemsContainer = document.getElementById('cart-items');
       const cartTotalPrice = document.getElementById('cart-total-price');
-      const cartEmptyMessage = document.getElementById('cart-empty-message'); // Get the element
+      const cartEmptyMessage = document.getElementById('cart-empty-message');
 
-      // Clear existing cart items
       cartItemsContainer.innerHTML = '';
 
       if (cart.length === 0) {
-        if (cartEmptyMessage) { // Null check for cartEmptyMessage
-            cartEmptyMessage.style.display = 'block'; // Show empty message
-        }
-        cartTotalPrice.textContent = `₹0.00`; // Reset total price
+        cartEmptyMessage.style.display = 'block';
+        cartTotalPrice.textContent = `₹0.00`;
       } else {
-        if (cartEmptyMessage) { // Null check for cartEmptyMessage
-            cartEmptyMessage.style.display = 'none'; // Hide empty message
-        }
+        cartEmptyMessage.style.display = 'none';
         let total = 0;
-        // Iterate through cart items and create HTML for each
-        cart.forEach(item => {
+        cart.forEach((item, index) => {
           total += item.price * item.quantity;
           const cartItemDiv = document.createElement('div');
           cartItemDiv.classList.add('cart-item');
+          
+          let itemDetails = `<h4>${item.name}</h4>`;
+          // Display variant details if present
+          if (item.selectedVariantName && item.selectedOptionName) {
+              itemDetails += `<p>${item.selectedVariantName}: ${item.selectedOptionName}</p>`;
+          } else if (item.selectedVariantName) { // Fallback for simpler variants if only variant name is set
+              itemDetails += `<p>${item.selectedVariantName}</p>`;
+          }
+          itemDetails += `<p>₹${item.price.toFixed(2)} each</p>`;
+
+
           cartItemDiv.innerHTML = `
             <div class="cart-item-info">
-                <h4>${item.name}</h4>
-                <p>₹${item.price.toFixed(2)} each</p>
+                ${itemDetails}
             </div>
             <div class="cart-item-controls">
-                <button onclick="decreaseQuantity(${item.id})">-</button>
+                <button onclick="decreaseQuantity(${index})">-</button>
                 <span class="cart-item-quantity">${item.quantity}</span>
-                <button onclick="increaseQuantity(${item.id})">+</button>
-                <button onclick="removeFromCart(${item.id})" style="background: #f44336;"><i class="bi bi-trash"></i></button>
+                <button onclick="increaseQuantity(${index})">+</button>
+                <button onclick="removeFromCart(${index})" style="background: #f44336;"><i class="bi bi-trash"></i></button>
             </div>
           `;
           cartItemsContainer.appendChild(cartItemDiv);
         });
-        cartTotalPrice.textContent = `₹${total.toFixed(2)}`; // Update total price
+        cartTotalPrice.textContent = `₹${total.toFixed(2)}`;
       }
-      // Save current cart state to localStorage
       localStorage.setItem('deepanshuCart', JSON.stringify(cart));
     }
 
     /**
-     * Adds an item to the cart or increases its quantity if already present.
-     * @param {number} itemId - The ID of the menu item to add.
+     * Adds an item (or a selected variant) to the cart.
+     * @param {string} itemId - The ID of the menu item.
+     * @param {object | null} selectedVariantDetails - The selected variant option object, or null for non-variant items.
      */
-    function addToCart(itemId) {
-      const existingItem = cart.find(item => item.id === itemId);
-      if (existingItem) {
-        existingItem.quantity++;
+    function addToCart(itemId, selectedVariantDetails = null) {
+      const originalItem = menuItems.find(item => item.id === itemId);
+      if (!originalItem) return;
+
+      let itemToAdd = { 
+          id: originalItem.id, // Original item ID
+          name: originalItem.name,
+          images: originalItem.images,
+          description: originalItem.description,
+          category: originalItem.category
+      };
+
+      if (selectedVariantDetails) {
+          // For variant items
+          itemToAdd.price = selectedVariantDetails.price;
+          itemToAdd.selectedVariantName = selectedVariantDetails.variantName; // e.g., "Full", "Chocolate"
+          itemToAdd.selectedOptionName = selectedVariantDetails.optionName; // e.g., "1000 ml", "Small"
+          itemToAdd.description = selectedVariantDetails.description || originalItem.description; // Use variant's description if available, else main
+          // Create a unique ID for this specific variant selection in the cart
+          itemToAdd.cartId = `${originalItem.id}-${selectedVariantDetails.variantName}-${selectedVariantDetails.optionName}`;
       } else {
-        const menuItem = menuItems.find(item => item.id === itemId);
-        if (menuItem) {
-          cart.push({ ...menuItem, quantity: 1 });
-        }
+          // For non-variant items
+          itemToAdd.price = originalItem.price;
+          itemToAdd.cartId = originalItem.id; // Cart ID is just item ID for non-variants
+      }
+      
+      const existingCartItem = cart.find(item => item.cartId === itemToAdd.cartId);
+
+      if (existingCartItem) {
+        existingCartItem.quantity++;
+      } else {
+        cart.push({ ...itemToAdd, quantity: 1 });
       }
       showNotification('Item added to cart ✅', 'var(--success-green)');
-      renderCartItems(); // Re-render cart to reflect changes
+      renderCartItems();
     }
 
     /**
      * Increases the quantity of a specific item in the cart.
-     * @param {number} itemId - The ID of the item to increase quantity.
+     * @param {number} index - The index of the item in the cart array.
      */
-    function increaseQuantity(itemId) {
-        const item = cart.find(item => item.id === itemId);
-        if (item) {
-            item.quantity++;
+    function increaseQuantity(index) {
+        if (cart[index]) {
+            cart[index].quantity++;
             renderCartItems();
         }
     }
@@ -1046,15 +1183,15 @@
     /**
      * Decreases the quantity of a specific item in the cart.
      * If quantity drops to 0, the item is removed from the cart.
-     * @param {number} itemId - The ID of the item to decrease quantity.
+     * @param {number} index - The index of the item in the cart array.
      */
-    function decreaseQuantity(itemId) {
-        const itemIndex = cart.findIndex(item => item.id === itemId);
-        if (itemIndex !== -1) {
-            if (cart[itemIndex].quantity > 1) {
-                cart[itemIndex].quantity--;
+    function decreaseQuantity(index) {
+        if (cart[index]) {
+            if (cart[index].quantity > 1) {
+                cart[index].quantity--;
             } else {
-                cart.splice(itemIndex, 1); // Remove item if quantity is 1
+                cart.splice(index, 1); // Remove item if quantity is 1
+                showNotification('Item removed from cart 🗑️', '#f44336'); // Red notification for removal
             }
             renderCartItems();
         }
@@ -1062,21 +1199,22 @@
 
     /**
      * Removes a specific item from the cart entirely.
-     * @param {number} itemId - The ID of the item to remove.
+     * @param {number} index - The index of the item in the cart array.
      */
-    function removeFromCart(itemId) {
-      cart = cart.filter(item => item.id !== itemId);
-      renderCartItems();
-      showNotification('Item removed from cart 🗑️', '#f44336'); // Red notification for removal
+    function removeFromCart(index) {
+      if (cart[index]) {
+          cart.splice(index, 1);
+          renderCartItems();
+          showNotification('Item removed from cart 🗑️', '#f44336'); // Red notification for removal
+      }
     }
 
     /**
      * Clears all items from the cart after user confirmation.
      */
     function clearCart() {
-        // Using a custom modal for confirmation instead of browser's alert/confirm
         const confirmationModal = document.createElement('div');
-        confirmationModal.classList.add('popup'); // Reusing popup styles
+        confirmationModal.classList.add('popup');
         confirmationModal.innerHTML = `
             <div class="popup-content">
                 <h3>Clear Cart Confirmation</h3>
@@ -1095,7 +1233,7 @@
             renderCartItems();
             showNotification('Cart cleared successfully! 👋', 'var(--warning-orange)');
             confirmationModal.classList.remove('show');
-            setTimeout(() => confirmationModal.remove(), 300); // Remove element after animation
+            setTimeout(() => confirmationModal.remove(), 300);
         };
 
         document.getElementById('cancel-clear-cart').onclick = () => {
@@ -1111,21 +1249,17 @@
      * @param {HTMLElement} clickedButton - The navigation button that was clicked.
      */
     function navigate(sectionId, clickedButton = null) {
-      // Hide all sections
       document.querySelectorAll('.menu-section, .cart-section, .about-section, .order-online-section').forEach(section => {
         section.classList.remove('active');
       });
-      // Show the target section
       document.getElementById(sectionId).classList.add('active');
 
-      // Deactivate all nav buttons
       document.querySelectorAll('.nav button').forEach(button => {
         button.classList.remove('active');
       });
-      // Activate the clicked button or the corresponding button
       if (clickedButton) {
         clickedButton.classList.add('active');
-      } else { // Fallback for initial load or programmatic navigation
+      } else {
           const navButtonId = sectionId + '-nav-btn';
           const navButton = document.getElementById(navButtonId);
           if (navButton) navButton.classList.add('active');
@@ -1137,35 +1271,37 @@
      * @param {string} category - The category to filter by ('all', 'starter', 'main', etc.).
      * @param {HTMLElement} clickedButton - The button that was clicked to trigger the filter.
      */
-    function filterCategory(category, clickedButton) {
-      // Deactivate all dropdown filter buttons
+    function filterCategory(category, clickedButton = null) {
       document.querySelectorAll('.category-dropdown button').forEach(btn => {
           btn.classList.remove('active');
       });
 
-      // Activate the clicked button
       if (clickedButton) {
           clickedButton.classList.add('active');
       }
 
-      // Get current search input value
       const searchInputValue = document.getElementById('search-input').value.toLowerCase();
+      
       let filteredItems = menuItems;
 
-      // Apply category filter
       if (category !== 'all') {
         filteredItems = filteredItems.filter(item => item.category === category);
       }
 
-      // Apply search filter on top of category filter
       if (searchInputValue) {
           filteredItems = filteredItems.filter(item =>
               item.name.toLowerCase().includes(searchInput) ||
-              item.description.toLowerCase().includes(searchInput)
+              (item.description && item.description.toLowerCase().includes(searchInput)) ||
+              (item.hasVariants && item.variants.some(vGroup => 
+                  vGroup.options.some(opt => 
+                      (opt.name && opt.name.toLowerCase().includes(searchInput)) || 
+                      (opt.description && opt.description.toLowerCase().includes(searchInput))
+                  )
+              ))
           );
       }
-      renderMenuItems(filteredItems); // Render the filtered results
-      updateMenuSectionTitle(category); // Update the menu section title
+      renderMenuItems(filteredItems);
+      updateMenuSectionTitle(category);
     }
 
     /**
@@ -1174,22 +1310,25 @@
      */
     function searchMenu() {
         const searchInput = document.getElementById('search-input').value.toLowerCase();
-        // Get the currently active category from filter buttons (only dropdown buttons exist now)
         const activeCategoryButton = document.querySelector('.category-dropdown button.active');
         const currentCategory = activeCategoryButton ? activeCategoryButton.dataset.category : 'all';
 
         let filteredItems = menuItems;
-        // Apply category filter first if one is active
         if (currentCategory !== 'all') {
             filteredItems = filteredItems.filter(item => item.category === currentCategory);
         }
 
-        // Apply search filter
         const searchedItems = filteredItems.filter(item =>
             item.name.toLowerCase().includes(searchInput) ||
-            item.description.toLowerCase().includes(searchInput)
+            (item.description && item.description.toLowerCase().includes(searchInput)) ||
+            (item.hasVariants && item.variants.some(vGroup => 
+                vGroup.options.some(opt => 
+                    (opt.name && opt.name.toLowerCase().includes(searchInput)) || 
+                    (opt.description && opt.description.toLowerCase().includes(searchInput))
+                )
+            ))
         );
-        renderMenuItems(searchedItems); // Render the search results
+        renderMenuItems(searchedItems);
     }
 
     /**
@@ -1202,13 +1341,13 @@
       notification.textContent = message;
       notification.style.backgroundColor = bgColor;
       notification.style.display = 'block';
-      notification.style.animation = 'fadein 0.5s ease forwards'; // Apply fade-in animation
+      notification.style.animation = 'fadein 0.5s ease forwards';
       setTimeout(() => {
-        notification.style.animation = 'fadeout 0.5s ease forwards'; // Apply fade-out after delay
+        notification.style.animation = 'fadeout 0.5s ease forwards';
         setTimeout(() => {
-          notification.style.display = 'none'; // Hide after fade-out
+          notification.style.display = 'none';
         }, 500);
-      }, 2000); // Notification remains visible for 2 seconds
+      }, 2000);
     }
 
     /**
@@ -1217,32 +1356,40 @@
      */
     function populateCategoryDropdown() {
         const dropdown = document.getElementById('category-dropdown');
-        dropdown.innerHTML = ''; // Clear existing
+        dropdown.innerHTML = '';
         
-        // Calculate item counts for each category
         const categoryCounts = menuItems.reduce((acc, item) => {
-            acc[item.category] = (acc[item.category] || 0) + 1;
+            if (item.category) {
+                acc[item.category] = (acc[item.category] || 0) + 1;
+            }
             return acc;
         }, {});
 
-        const categories = [
-            {id: 'all', name: 'All'},
-            {id: 'starter', name: 'Starters'},
-            {id: 'main', name: 'Main Course'},
-            {id: 'drink', name: 'Drinks'},
-            {id: 'dessert', name: 'Desserts'}
-        ];
+        let uniqueCategories = Array.from(new Set(menuItems.map(item => item.category))).filter(Boolean);
+        uniqueCategories.sort();
+
+        const categories = [{id: 'all', name: 'All', count: menuItems.length}];
+        uniqueCategories.forEach(catId => {
+            let name = catId.charAt(0).toUpperCase() + catId.slice(1);
+            if (catId === 'non-veg') name = 'Non-Veg'; // Specific mapping for 'non-veg'
+            if (catId === 'main') name = 'Main Course'; // Specific mapping for 'main'
+            if (catId === 'starter') name = 'Starters'; // Specific mapping for 'starter'
+            if (catId === 'dessert') name = 'Desserts'; // Specific mapping for 'dessert'
+            if (catId === 'drinks') name = 'Drinks'; // Specific mapping for 'drinks'
+            
+            categories.push({id: catId, name: name, count: categoryCounts[catId] || 0});
+        });
 
         categories.forEach(cat => {
             const button = document.createElement('button');
             button.innerHTML = `
                 <span>${cat.name}</span>
-                <span class="item-count">${categoryCounts[cat.id] || 0}</span>
+                <span class="item-count">${cat.count}</span>
             `;
-            button.dataset.category = cat.id; // Store category ID
+            button.dataset.category = cat.id;
             button.onclick = () => {
-                filterCategory(cat.id, button); // Call filter and pass the clicked button
-                toggleCategoryDropdown(document.querySelector('.section-title-wrapper')); // Close dropdown after selection
+                filterCategory(cat.id, button);
+                toggleCategoryDropdown(document.querySelector('.section-title-wrapper'));
             };
             dropdown.appendChild(button);
         });
@@ -1254,15 +1401,15 @@
      */
     function updateMenuSectionTitle(categoryId) {
         const menuSectionTitle = document.getElementById('menu-section-title');
-        const categories = {
+        const categoryNames = {
             'all': 'Our Delicious Menu',
             'starter': 'Starters',
             'main': 'Main Course',
             'drink': 'Drinks',
-            'dessert': 'Desserts'
+            'dessert': 'Desserts',
+            'non-veg': 'Non-Veg'
         };
-        // Get the friendly name for the category
-        const categoryName = categories[categoryId] || 'Menu'; // Fallback to 'Menu'
+        const categoryName = categoryNames[categoryId] || (categoryId.charAt(0).toUpperCase() + categoryId.slice(1));
         menuSectionTitle.innerHTML = `${categoryName} <i class="bi bi-chevron-down toggle-icon"></i>`;
     }
 
@@ -1272,30 +1419,130 @@
      */
     function toggleCategoryDropdown(wrapperElement) {
         const dropdown = document.getElementById('category-dropdown');
-        if (!dropdown) return; // Defensive check
+        if (!dropdown) return;
 
         const menuSectionTitleText = document.getElementById('menu-section-title');
 
         if (dropdown.classList.contains('show')) {
             dropdown.classList.remove('show');
             wrapperElement.classList.remove('expanded');
-            dropdown.style.display = 'none'; // Ensure it's fully hidden for screen readers etc.
-            // Reset title text to "Our Delicious Menu"
-            updateMenuSectionTitle(document.querySelector('.category-dropdown button.active')?.dataset.category || 'all');
+            dropdown.style.display = 'none';
+            const currentActiveCategory = document.querySelector('.category-dropdown button.active')?.dataset.category || 'all';
+            updateMenuSectionTitle(currentActiveCategory);
 
         } else {
-            // Ensure the correct category is active in dropdown before opening
             const currentActiveCategory = document.querySelector('.category-dropdown button.active')?.dataset.category || 'all';
             filterCategory(currentActiveCategory, document.querySelector(`.category-dropdown button[data-category="${currentActiveCategory}"]`));
 
-            dropdown.style.display = 'flex'; // Use flex for layout when visible
-            // Give a small delay to allow display property to apply before animation
+            dropdown.style.display = 'flex';
             setTimeout(() => {
                 dropdown.classList.add('show');
                 wrapperElement.classList.add('expanded');
             }, 10);
-            menuSectionTitleText.innerHTML = `Select Category <i class="bi bi-chevron-up toggle-icon"></i>`; // Change text when open
+            menuSectionTitleText.innerHTML = `Select Category <i class="bi bi-chevron-up toggle-icon"></i>`;
         }
+    }
+
+    /**
+     * Opens the variant selection modal for an item.
+     * @param {string} itemId - The ID of the item for which to select variants.
+     */
+    function openVariantSelectionModal(itemId) {
+        selectedItemForVariant = menuItems.find(item => item.id === itemId);
+        if (!selectedItemForVariant || !selectedItemForVariant.hasVariants || !selectedItemForVariant.variants || selectedItemForVariant.variants.length === 0) {
+            showNotification('This item does not have selectable options.', 'var(--warning-orange)');
+            return;
+        }
+
+        document.getElementById('variant-item-name').textContent = selectedItemForVariant.name;
+        const optionsContainer = document.getElementById('variant-options-container');
+        optionsContainer.innerHTML = '';
+        selectedVariantOption = null; // Reset selection
+        document.getElementById('add-variant-to-cart-btn').disabled = true; // Disable button initially
+
+        // Render variants and their options
+        selectedItemForVariant.variants.forEach((variantGroup, variantGroupIndex) => {
+            // In this new structure, there's usually only one variantGroup named "Options" from Apps Script
+            // We'll iterate through its options directly.
+            if (variantGroup.options) {
+                const groupDiv = document.createElement('div');
+                groupDiv.classList.add('variant-selection-group');
+                groupDiv.innerHTML = `<h4>${variantGroup.variant}</h4>`; // E.g., "Options"
+
+                variantGroup.options.forEach((option, optionIndex) => {
+                    const optionDiv = document.createElement('label');
+                    optionDiv.classList.add('variant-item-option');
+                    optionDiv.innerHTML = `
+                        <input type="radio" name="${selectedItemForVariant.id}_variant_option" 
+                               data-variant-group-index="${variantGroupIndex}" 
+                               data-option-index="${optionIndex}">
+                        <div class="variant-item-option-info">
+                            <span class="name">${option.name}</span>
+                            ${option.description ? `<p class="description">${option.description}</p>` : ''}
+                        </div>
+                        <span class="variant-item-option-price">₹${option.price.toFixed(2)}</span>
+                    `;
+                    optionDiv.addEventListener('click', (e) => {
+                        if (e.target.tagName !== 'INPUT') { // Avoid double click if input itself is clicked
+                            optionDiv.querySelector('input[type="radio"]').checked = true;
+                            optionDiv.querySelector('input[type="radio"]').dispatchEvent(new Event('change'));
+                        }
+                    });
+                    groupDiv.appendChild(optionDiv);
+                });
+                optionsContainer.appendChild(groupDiv);
+            }
+        });
+
+        // Add a single event listener to the container for all radio button changes
+        // Using event delegation for efficiency and to handle dynamically added radios
+        optionsContainer.addEventListener('change', (event) => {
+            if (event.target.type === 'radio' && event.target.name === `${selectedItemForVariant.id}_variant_option`) {
+                optionsContainer.querySelectorAll('.variant-item-option').forEach(label => {
+                    label.classList.remove('selected');
+                });
+                if (event.target.checked) {
+                    event.target.closest('.variant-item-option').classList.add('selected');
+                }
+
+                const variantGroupIndex = parseInt(event.target.dataset.variantGroupIndex);
+                const optionIndex = parseInt(event.target.dataset.optionIndex);
+                const chosenOption = selectedItemForVariant.variants[variantGroupIndex].options[optionIndex];
+
+                selectedVariantOption = {
+                    variantName: selectedItemForVariant.variants[variantGroupIndex].variant, // E.g., "Options"
+                    optionName: chosenOption.name, // E.g., "FULL - 1500ML"
+                    price: chosenOption.price,
+                    description: chosenOption.description
+                };
+                document.getElementById('add-variant-to-cart-btn').disabled = false; // Enable button
+            }
+        }, {once: false}); // The {once: false} is explicitly shown for clarity, but it's default behavior.
+
+        document.getElementById('variant-selection-popup').classList.add('show');
+    }
+
+    /**
+     * Adds the selected variant option to the cart.
+     */
+    function addSelectedVariantToCart() {
+        if (!selectedVariantOption) {
+            showNotification('Please select an option first.', 'var(--warning-orange)');
+            return;
+        }
+
+        addToCart(selectedItemForVariant.id, selectedVariantOption);
+        closeVariantSelectionModal(); // Close modal after adding to cart
+    }
+
+    /**
+     * Closes the variant selection modal.
+     */
+    function closeVariantSelectionModal() {
+        document.getElementById('variant-selection-popup').classList.remove('show');
+        selectedItemForVariant = null;
+        selectedVariantOption = null;
+        document.getElementById('add-variant-to-cart-btn').disabled = true; // Re-disable button
     }
 
 
@@ -1327,7 +1574,6 @@
         const customerPhone = document.getElementById('customer-phone').value;
         const customerAddress = document.getElementById('customer-address').value;
 
-        // Basic validation for required fields
         if (!customerName.trim() || !customerPhone.trim()) {
             showNotification('Please enter your name and phone number to proceed.', 'var(--warning-orange)');
             return;
@@ -1335,12 +1581,16 @@
 
         let orderDetails = "Hello Deepanshu Restaurant, I would like to place an order:\n\n";
         
-        // Add each item from the cart to the order details
         cart.forEach(item => {
-            orderDetails += `${item.name} (x${item.quantity}) - ₹${(item.price * item.quantity).toFixed(2)}\n`;
+            let itemLine = `${item.name}`;
+            if (item.selectedVariantName && item.selectedOptionName) {
+                itemLine += ` (${item.selectedVariantName}: ${item.selectedOptionName})`;
+            } else if (item.selectedVariantName) { // Fallback for simpler variants
+                itemLine += ` (${item.selectedVariantName})`;
+            }
+            orderDetails += `${itemLine} (x${item.quantity}) - ₹${(item.price * item.quantity).toFixed(2)}\n`;
         });
         
-        // Calculate the total amount
         const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
         orderDetails += `\nTotal: ₹${totalAmount.toFixed(2)}\n\n`;
         
@@ -1353,11 +1603,9 @@
         }
         orderDetails += `\nThank you!`;
 
-        // Encode the message for a WhatsApp URL
         const whatsappUrl = `https://wa.me/919910109626?text=${encodeURIComponent(orderDetails)}`;
-        window.open(whatsappUrl, '_blank'); // Open WhatsApp in a new tab/window
+        window.open(whatsappUrl, '_blank');
 
-        // Clear cart and show success message after "order" is sent
         cart = [];
         renderCartItems();
         closeOrderPopup();
@@ -1366,19 +1614,11 @@
 
     // Initial setup when the DOM is fully loaded
     document.addEventListener('DOMContentLoaded', () => {
-        // Populate the new dropdown first, so its buttons are available
-        populateCategoryDropdown();
-
-        // Then render menu and cart
-        renderMenuItems(menuItems); // Render all menu items initially
+        fetchMenuItems(); // Fetch menu items from Apps Script
         renderCartItems(); // Render cart items
 
         // Ensure the menu section is active on initial load
         navigate('menu');
-
-        // Set initial active state for 'All' category for dropdown buttons
-        filterCategory('all', document.querySelector('.category-dropdown button[data-category="all"]'));
-
 
         // Close dropdown if clicked outside
         document.addEventListener('click', (event) => {
