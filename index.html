@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delicious Bites - Order Online</title>
+    <title>Deepanshu Restaurant - Order Online</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons CDN -->
@@ -154,13 +154,12 @@
             @apply flex items-center justify-between p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer;
         }
 
-        /* Add to Cart Toast Notification */
-        .add-to-cart-toast {
+        /* Toast Notifications (Add to Cart & General Info) */
+        .app-toast {
             position: fixed;
             bottom: 6rem; /* Above bottom nav */
             left: 50%;
             transform: translateX(-50%);
-            background-color: rgba(34, 197, 94, 0.9); /* Green 500 with opacity */
             color: white;
             padding: 0.75rem 1.5rem;
             border-radius: 9999px; /* Full rounded */
@@ -169,10 +168,107 @@
             visibility: hidden;
             transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
             z-index: 1100; /* Above bottom nav */
+            text-align: center;
+            min-width: 200px;
         }
-        .add-to-cart-toast.show {
+        .app-toast.show {
             opacity: 1;
             visibility: visible;
+        }
+        .app-toast.success { background-color: rgba(34, 197, 94, 0.9); /* Green 500 */ }
+        .app-toast.error { background-color: rgba(239, 68, 68, 0.9); /* Red 500 */ }
+        .app-toast.info { background-color: rgba(59, 130, 246, 0.9); /* Blue 500 */ }
+        .app-toast.warning { background-color: rgba(251, 191, 36, 0.9); /* Yellow 400 */ }
+
+
+        /* Loading Spinner for Menu */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #f97316; /* Orange 500 */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        .dark .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top: 4px solid #fb923c; /* Orange 400 */
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Review Star Rating */
+        .star-rating {
+            display: inline-block;
+            direction: rtl; /* For right-to-left star display */
+        }
+        .star-rating input[type="radio"] {
+            display: none;
+        }
+        .star-rating label {
+            font-size: 1.5rem; /* Adjust star size */
+            color: #cbd5e1; /* Default gray star */
+            cursor: pointer;
+            padding: 0 0.1rem;
+            transition: color 0.2s ease;
+        }
+        .star-rating input[type="radio"]:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #fbbf24; /* Yellow for selected/hovered stars */
+        }
+        /* Ensure stars fill from left for LTR display but logic is RTL */
+        .star-rating label:hover ~ label {
+            color: #fbbf24;
+        }
+        .star-rating:hover label {
+            color: #cbd5e1; /* Reset on hover for entire group */
+        }
+        .star-rating input[type="radio"]:checked + label,
+        .star-rating input[type="radio"]:checked + label ~ label {
+            color: #fbbf24;
+        }
+
+        /* Confirmation Modal */
+        #confirmation-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2500; /* Higher than other modals */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #confirmation-modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        #confirmation-modal-content {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-width: 90%;
+            width: 400px;
+            transform: translateY(-20px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            text-align: center;
+        }
+        #confirmation-modal-overlay.open #confirmation-modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .dark #confirmation-modal-content {
+            background-color: #1f2937;
         }
     </style>
 </head>
@@ -182,9 +278,9 @@
         <div class="container mx-auto px-4 py-3 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <!-- Restaurant Logo -->
-                <img src="https://placehold.co/40x40/FF7F50/FFFFFF?text=R" alt="Restaurant Logo" class="rounded-full" />
+                <img src="https://placehold.co/40x40/FF7F50/FFFFFF?text=D" alt="Restaurant Logo" class="rounded-full" />
                 <!-- Restaurant Title -->
-                <h1 class="text-xl md:text-2xl font-bold text-orange-600 dark:text-orange-500">Delicious Bites</h1>
+                <h1 class="text-xl md:text-2xl font-bold text-orange-600 dark:text-orange-500">Deepanshu Restaurant</h1>
             </div>
 
             <!-- Mobile Menu Button (visible only on mobile, desktop does not have top nav anymore) -->
@@ -237,9 +333,11 @@
                     Categories
                 </button>
             </div>
+            <div id="loading-spinner-container" class="flex justify-center items-center py-10 hidden">
+                <div class="spinner"></div>
+            </div>
             <div id="menu-items-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Menu items will be loaded here by JavaScript -->
-                <p id="loading-message" class="col-span-full text-center text-gray-600 dark:text-gray-300">Loading menu...</p>
                 <p id="error-message" class="col-span-full text-center text-red-600 dark:text-red-400 hidden">Failed to load menu. Please try again later.</p>
             </div>
         </div>
@@ -256,7 +354,7 @@
                 </div>
                 <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center">
                     <span class="text-xl font-bold text-gray-800 dark:text-white">Total:</span>
-                    <span id="cart-total" class="text-3xl font-extrabold text-orange-600 dark:text-orange-500">₹0.00</span>
+                    <span id="cart-total" class="text-3xl font-extrabold text-orange-600 dark:text-orange-500">?0.00</span>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-4 mt-8">
                     <button id="clear-cart-button" class="flex-grow bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-xl flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
@@ -283,19 +381,37 @@
         <!-- Review Page -->
         <div id="review-page" class="page-content hidden">
             <h2 class="text-3xl font-extrabold text-gray-800 dark:text-white mb-6 text-center">Customer Reviews</h2>
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 max-w-2xl mx-auto">
-              <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
-                "Absolutely loved the food! The Margherita pizza was perfect, and the service was quick. Highly recommend!" - <span class="font-semibold">Aman K.</span>
-              </p>
-              <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
-                "Great experience ordering from Delicious Bites. The Spaghetti Carbonara was rich and delicious. Will definitely order again." - <span class="font-semibold">Priya S.</span>
-              </p>
-              <p class="text-lg text-gray-700 dark:text-gray-300">
-                "The Chicken Burger was juicy and flavorful. A fantastic option for a quick and tasty meal." - <span class="font-semibold">Rahul M.</span>
-              </p>
-              <p class="mt-6 text-gray-600 dark:text-gray-400">
-                (This is a placeholder for real reviews. You could add a review submission form here!)
-              </p>
+            
+            <!-- Review Submission Section -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-8 max-w-2xl mx-auto border border-gray-200 dark:border-gray-700">
+                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Leave a Review</h3>
+                <div class="mb-4">
+                    <label for="reviewer-name" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Your Name:</label>
+                    <input type="text" id="reviewer-name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200" placeholder="e.g., Jane Doe">
+                </div>
+                <div class="mb-4">
+                    <label for="review-text" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Your Review:</label>
+                    <textarea id="review-text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200" rows="4" placeholder="Share your experience..."></textarea>
+                </div>
+                <div class="mb-6 flex items-center">
+                    <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mr-3">Rating:</label>
+                    <div class="star-rating" id="review-star-rating">
+                        <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 stars">?</label>
+                        <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars">?</label>
+                        <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars">?</label>
+                        <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars">?</label>
+                        <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star">?</label>
+                    </div>
+                </div>
+                <button id="submit-review-button" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    Submit Review
+                </button>
+            </div>
+
+            <!-- Existing Reviews Section (will be dynamically loaded) -->
+            <div id="existing-reviews-container" class="space-y-6 max-w-2xl mx-auto">
+                <p id="no-reviews-message" class="text-center text-lg text-gray-600 dark:text-gray-300 hidden">No reviews yet. Be the first to leave one!</p>
+                <!-- Reviews will be loaded here by JavaScript -->
             </div>
         </div>
 
@@ -304,13 +420,13 @@
             <h2 class="text-3xl font-extrabold text-gray-800 dark:text-white mb-6 text-center">About Us</h2>
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 max-w-2xl mx-auto">
               <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
-                Welcome to <span class="font-semibold text-orange-600">Delicious Bites</span>, where culinary excellence meets convenience! We are passionate about serving fresh, high-quality, and incredibly tasty food to our community.
+                Welcome to <span class="font-semibold text-orange-600">Deepanshu Restaurant</span>, where culinary excellence meets convenience! We are passionate about serving fresh, high-quality, and incredibly tasty food to our community.
               </p>
               <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
                 Our journey began with a simple goal: to create a delightful dining experience, whether you're enjoying our food in the comfort of your home or on the go. We believe in using the finest ingredients, crafted with care by our experienced chefs.
               </p>
               <p class="text-lg text-gray-700 dark:text-gray-300">
-                Thank you for choosing Delicious Bites. We look forward to serving you!
+                Thank you for choosing Deepanshu Restaurant. We look forward to serving you!
               </p>
             </div>
         </div>
@@ -325,7 +441,7 @@
               <ul class="text-left text-lg text-gray-700 dark:text-gray-300 space-y-3">
                 <li>
                   <strong class="text-orange-600 dark:text-orange-500">Email:</strong>
-                  <a href="mailto:support@deliciousbites.com" class="text-blue-500 hover:underline">support@deliciousbites.com</a>
+                  <a href="mailto:support@deepanshurestaurant.com" class="text-blue-500 hover:underline">support@deepanshurestaurant.com</a>
                 </li>
                 <li>
                   <strong class="text-orange-600 dark:text-orange-500">Phone:</strong>
@@ -422,9 +538,21 @@
         </div>
     </div>
 
-    <!-- Add to Cart Confirmation Toast -->
-    <div id="add-to-cart-toast" class="add-to-cart-toast">
-        Item added to cart!
+    <!-- General Info Toast (for success, error, info messages) -->
+    <div id="info-toast" class="app-toast">
+        <!-- Message will be inserted here -->
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal-overlay" class="modal-overlay">
+        <div id="confirmation-modal-content" class="modal-content">
+            <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4" id="confirmation-modal-title"></h3>
+            <p class="text-gray-700 dark:text-gray-300 mb-6" id="confirmation-modal-message"></p>
+            <div class="flex justify-center gap-4">
+                <button id="confirm-yes-button" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-5 rounded-full shadow-md transition-colors">Yes</button>
+                <button id="confirm-no-button" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-5 rounded-full shadow-md transition-colors">No</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -438,25 +566,29 @@
         let selectedCategory = 'All'; // Default category
         let menuItems = []; // This will now be populated from Google Apps Script
 
-        // IMPORTANT: This URL is from your deployed Google Apps Script
-        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-lPu5QxuUU7OPtCyJr29ezXMXcQEKush8wjBrTmc2_Yu6_K0RTuiRA3-momVpQpZI/exec'; // Your deployed Web App URL
+        // IMPORTANT: This URL is from your deployed Google Apps Script for fetching menu
+        const GOOGLE_APPS_SCRIPT_MENU_URL = 'https://script.google.com/macros/s/AKfycby-lPu5QxuUU7OPtCyJr29ezXMXcQEKush8wjBrTmc2_Yu6_K0RTuiRA3-momVpQpZI/exec';
+
+        // IMPORTANT: Replace this with YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL for Reviews
+        // This script will handle saving and fetching reviews from your Google Sheet.
+        // See instructions below the code for how to set this up.
+        const GOOGLE_SHEET_REVIEW_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJAfCPxRQHR97Yk3jPiw1XjcXpSVu2B4uvuLABeHc6p7OOIQtApihkyAtmtOIl8nI/exec'; // <--- REPLACE THIS LINE!
 
         // --- DOM Elements ---
         const menuItemsContainer = document.getElementById('menu-items-container');
-        const loadingMessage = document.getElementById('loading-message');
+        const loadingSpinnerContainer = document.getElementById('loading-spinner-container');
         const errorMessage = document.getElementById('error-message');
         const cartItemsList = document.getElementById('cart-items-list');
         const cartTotalSpan = document.getElementById('cart-total');
-        // cartItemCountSpan is now unused as desktop nav is removed
-        const mobileCartItemCountDrawer = document.getElementById('mobile-cart-item-count-drawer'); // For mobile drawer
-        const bottomCartItemCount = document.getElementById('bottom-cart-item-count'); // For bottom nav
+        const mobileCartItemCountDrawer = document.getElementById('mobile-cart-item-count-drawer');
+        const bottomCartItemCount = document.getElementById('bottom-cart-item-count');
         const cartEmptyMessage = document.getElementById('cart-empty-message');
         const cartContent = document.getElementById('cart-content');
         const placeOrderButton = document.getElementById('place-order-button');
-        const clearCartButton = document.getElementById('clear-cart-button'); // New clear cart button
+        const clearCartButton = document.getElementById('clear-cart-button');
         const orderHistoryList = document.getElementById('order-history-list');
         const noOrdersMessage = document.getElementById('no-orders-message');
-        const addToCartToast = document.getElementById('add-to-cart-toast'); // New toast element
+        const infoToast = document.getElementById('info-toast'); // General info toast
 
         // Mobile menu elements
         const mobileMenuButton = document.getElementById('mobile-menu-button');
@@ -482,18 +614,89 @@
         const closeCategoryModalButton = document.getElementById('close-category-modal-button');
         const categoryList = document.getElementById('category-list');
 
+        // Review Page elements
+        const reviewerNameInput = document.getElementById('reviewer-name');
+        const reviewTextInput = document.getElementById('review-text');
+        const submitReviewButton = document.getElementById('submit-review-button');
+        const reviewStarRating = document.getElementById('review-star-rating');
+        const existingReviewsContainer = document.getElementById('existing-reviews-container');
+        const noReviewsMessage = document.getElementById('no-reviews-message');
+
+        // Confirmation Modal elements
+        const confirmationModalOverlay = document.getElementById('confirmation-modal-overlay');
+        const confirmationModalTitle = document.getElementById('confirmation-modal-title');
+        const confirmationModalMessage = document.getElementById('confirmation-modal-message');
+        const confirmYesButton = document.getElementById('confirm-yes-button');
+        const confirmNoButton = document.getElementById('confirm-no-button');
+
         // --- Functions ---
+
+        /**
+         * Displays a custom toast message.
+         * @param {string} message - The message to display.
+         * @param {'success'|'error'|'info'|'warning'} type - The type of message for styling.
+         * @param {number} duration - How long the toast should be visible in milliseconds.
+         */
+        function showToast(message, type = 'info', duration = 2000) {
+            infoToast.textContent = message;
+            infoToast.className = `app-toast show ${type}`; // Reset classes and add new ones
+            setTimeout(() => {
+                infoToast.classList.remove('show');
+            }, duration);
+        }
+
+        /**
+         * Shows a custom confirmation modal.
+         * @param {string} title - The title of the confirmation.
+         * @param {string} message - The message to display.
+         * @returns {Promise<boolean>} Resolves with true if confirmed, false otherwise.
+         */
+        function showConfirmation(title, message) {
+            return new Promise((resolve) => {
+                confirmationModalTitle.textContent = title;
+                confirmationModalMessage.textContent = message;
+                confirmationModalOverlay.classList.add('open');
+
+                const handleYes = () => {
+                    confirmationModalOverlay.classList.remove('open');
+                    confirmYesButton.removeEventListener('click', handleYes);
+                    confirmNoButton.removeEventListener('click', handleNo);
+                    resolve(true);
+                };
+
+                const handleNo = () => {
+                    confirmationModalOverlay.classList.remove('open');
+                    confirmYesButton.removeEventListener('click', handleYes);
+                    confirmNoButton.removeEventListener('click', handleNo);
+                    resolve(false);
+                };
+
+                confirmYesButton.addEventListener('click', handleYes);
+                confirmNoButton.addEventListener('click', handleNo);
+
+                // Close on overlay click
+                const handleOverlayClick = (event) => {
+                    if (event.target === confirmationModalOverlay) {
+                        handleNo(); // Treat outside click as a "No"
+                        confirmationModalOverlay.removeEventListener('click', handleOverlayClick);
+                    }
+                };
+                confirmationModalOverlay.addEventListener('click', handleOverlayClick);
+            });
+        }
+
 
         /**
          * Fetches menu items from the Google Apps Script web app.
          */
         async function fetchMenuItems() {
-            loadingMessage.classList.remove('hidden');
+            loadingSpinnerContainer.classList.remove('hidden'); // Show spinner
+            menuItemsContainer.classList.add('hidden'); // Hide menu container while loading
             errorMessage.classList.add('hidden');
             menuItemsContainer.innerHTML = ''; // Clear existing content
 
             try {
-                const response = await fetch(GOOGLE_APPS_SCRIPT_URL);
+                const response = await fetch(GOOGLE_APPS_SCRIPT_MENU_URL);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -504,11 +707,14 @@
                 }
 
                 menuItems = data; // Populate global menuItems array
-                loadingMessage.classList.add('hidden');
+                
+                loadingSpinnerContainer.classList.add('hidden'); // Hide spinner
+                menuItemsContainer.classList.remove('hidden'); // Show menu container
                 renderMenu(); // Render menu after data is fetched
             } catch (error) {
                 console.error('Error fetching menu items:', error);
-                loadingMessage.classList.add('hidden');
+                loadingSpinnerContainer.classList.add('hidden'); // Hide spinner
+                menuItemsContainer.classList.remove('hidden'); // Show menu container even with error
                 errorMessage.classList.remove('hidden');
                 menuItemsContainer.innerHTML = `<p class="col-span-full text-center text-red-600 dark:text-red-400">Error loading menu: ${error.message}. Please ensure Google Apps Script is deployed correctly and Spreadsheet ID is accurate.</p>`;
             }
@@ -543,9 +749,9 @@
 
                 if (item.variants && item.variants.length > 0) {
                     // If item has variants, show a dropdown
-                    priceDisplay = `<span class="text-lg font-bold text-gray-800 dark:text-white">From ₹${Math.min(...item.variants.map(v => v.price)).toFixed(2)}</span>`;
+                    priceDisplay = `<span class="text-lg font-bold text-gray-800 dark:text-white">From ?${Math.min(...item.variants.map(v => v.price)).toFixed(2)}</span>`;
                     const optionsHtml = item.variants.map((variant, index) =>
-                        `<option value="${index}" data-price="${variant.price}">${variant.name} (₹${variant.price.toFixed(2)})</option>`
+                        `<option value="${index}" data-price="${variant.price}">${variant.name} (?${variant.price.toFixed(2)})</option>`
                     ).join('');
 
                     addToCartButtonHTML = `
@@ -558,7 +764,7 @@
                     `;
                 } else {
                     // If no variants, show single price and direct add button
-                    priceDisplay = `<span class="text-2xl font-bold text-orange-600 dark:text-orange-500">₹${item.price.toFixed(2)}</span>`;
+                    priceDisplay = `<span class="text-2xl font-bold text-orange-600 dark:text-orange-500">?${item.price.toFixed(2)}</span>`;
                     addToCartButtonHTML = `
                         <button class="add-to-cart-button bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50" data-item-id="${item.id}" data-is-variant="false">
                             <span data-lucide="shopping-cart" class="w-5 h-5 inline-block mr-1"></span> Add
@@ -567,7 +773,7 @@
                 }
 
                 itemDiv.innerHTML = `
-                    <img src="${item.image}" alt="${item.name}" class="w-24 h-24 rounded-full mb-4 object-cover border-4 border-orange-200 dark:border-orange-700" />
+                    <img src="${item.image}" alt="${item.name}" class="w-28 h-28 object-cover rounded-lg mb-4 border-2 border-orange-300 dark:border-orange-600 shadow-md" />
                     <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">${item.name}</h3>
                     <p class="text-gray-600 dark:text-gray-300 text-sm mb-3 flex-grow">${item.description}</p>
                     <div class="flex flex-col items-center justify-between w-full mt-auto">
@@ -626,19 +832,7 @@
             }
             saveCartToLocalStorage();
             updateCartDisplay();
-            showAddToCartToast(itemToAdd.name); // Show confirmation toast
-        }
-
-        /**
-         * Shows a temporary toast notification when an item is added to the cart.
-         * @param {string} itemName - The name of the item added.
-         */
-        function showAddToCartToast(itemName) {
-            addToCartToast.textContent = `${itemName} added to cart!`;
-            addToCartToast.classList.add('show');
-            setTimeout(() => {
-                addToCartToast.classList.remove('show');
-            }, 2000); // Hide after 2 seconds
+            showToast(`${itemToAdd.name} added to cart!`, 'success'); // Show success toast
         }
 
         /**
@@ -671,21 +865,30 @@
             });
             saveCartToLocalStorage();
             updateCartDisplay();
+            showToast('Item removed from cart.', 'info');
         }
 
         /**
          * Clears all items from the cart.
          */
-        function clearCart() {
+        async function clearCart() {
             if (cartItems.length === 0) {
-                console.log("Cart is already empty.");
+                showToast("Cart is already empty.", 'info');
                 return;
             }
-            if (confirm("Are you sure you want to clear your entire cart?")) { // Using confirm for simplicity, replace with custom modal if needed
+
+            const confirmed = await showConfirmation(
+                "Clear Cart?",
+                "Are you sure you want to clear all items from your cart?"
+            );
+
+            if (confirmed) {
                 cartItems = [];
                 saveCartToLocalStorage();
                 updateCartDisplay();
-                console.log("Cart cleared.");
+                showToast("Cart cleared!", 'success');
+            } else {
+                showToast("Cart not cleared.", 'info');
             }
         }
 
@@ -722,10 +925,10 @@
                     const itemDisplayName = item.variantName ? `${item.name} (${item.variantName})` : item.name;
                     itemDiv.innerHTML = `
                         <div class="flex items-center gap-4">
-                            <img src="${item.image}" alt="${item.name}" class="w-16 h-16 rounded-lg object-cover" />
-                            <div>
+                            <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-md border-2 border-gray-200 dark:border-gray-600" />
+                            <div class="flex-grow">
                                 <h3 class="text-lg font-semibold text-gray-800 dark:text-white">${itemDisplayName}</h3>
-                                <p class="text-gray-600 dark:text-gray-300">₹${item.price.toFixed(2)} each</p>
+                                <p class="text-gray-600 dark:text-gray-300">?${item.price.toFixed(2)} each</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-3">
@@ -764,9 +967,8 @@
                     });
                 });
             }
-            cartTotalSpan.textContent = `₹${calculateTotal()}`;
+            cartTotalSpan.textContent = `?${calculateTotal()}`;
             // Update all cart count displays
-            // cartItemCountSpan is now unused as desktop nav is removed, but leaving for robustness.
             if (mobileCartItemCountDrawer) mobileCartItemCountDrawer.textContent = cartItems.length;
             if (bottomCartItemCount) bottomCartItemCount.textContent = cartItems.length;
             lucide.createIcons(); // Re-render Lucide icons for newly added elements
@@ -795,7 +997,7 @@
 
                 const orderDate = new Date(order.timestamp).toLocaleString();
                 const itemsListHtml = order.items.map(item =>
-                    `<li>${item.name}${item.variantName ? ` (${item.variantName})` : ''} x${item.quantity} - ₹${(item.price * item.quantity).toFixed(2)}</li>`
+                    `<li>${item.name}${item.variantName ? ` (${item.variantName})` : ''} x${item.quantity} - ?${(item.price * item.quantity).toFixed(2)}</li>`
                 ).join('');
 
                 orderDiv.innerHTML = `
@@ -810,7 +1012,7 @@
                     </ul>
                     <div class="flex justify-between items-center border-t border-gray-200 dark:border-gray-600 pt-3 mt-3">
                         <span class="text-lg font-bold text-gray-800 dark:text-white">Total:</span>
-                        <span class="text-2xl font-extrabold text-orange-600 dark:text-orange-500">₹${order.total.toFixed(2)}</span>
+                        <span class="text-2xl font-extrabold text-orange-600 dark:text-orange-500">?${order.total.toFixed(2)}</span>
                     </div>
                 `;
                 orderHistoryList.appendChild(orderDiv);
@@ -857,6 +1059,10 @@
             if (pageId === 'order-history') {
                 renderOrderHistory();
             }
+            // If navigating to review, fetch and render reviews
+            if (pageId === 'review') {
+                fetchReviewsAndRender();
+            }
         }
 
         /**
@@ -883,8 +1089,7 @@
          */
         function showOrderModal() {
             if (cartItems.length === 0) {
-                console.log('Cart is empty. Cannot place order.');
-                // For a user-friendly experience, you'd show a custom message box here.
+                showToast('Your cart is empty. Please add items before placing an order.', 'warning');
                 return;
             }
             orderNumberSpan.textContent = generateOrderNumber(); // Generate and display order number
@@ -907,7 +1112,7 @@
         /**
          * Confirms the order and sends details via WhatsApp.
          */
-        function confirmOrderAndSendWhatsApp() {
+        async function confirmOrderAndSendWhatsApp() {
             const orderType = orderTypeSelect.value;
             const customerName = customerNameInput.value.trim();
             const customerPhone = customerPhoneInput.value.trim();
@@ -916,13 +1121,11 @@
 
             // Basic validation
             if (!customerName || !customerPhone) {
-                console.log('Please enter your name and phone number.');
-                // For a user-friendly experience, you'd show a custom message box here.
+                showToast('Please enter your name and phone number.', 'error');
                 return;
             }
             if (orderType === 'delivery' && !deliveryAddress) {
-                console.log('Please enter your delivery address.');
-                // For a user-friendly experience, you'd show a custom message box here.
+                showToast('Please enter your delivery address.', 'error');
                 return;
             }
 
@@ -952,8 +1155,8 @@
             console.log('Order saved to local storage:', order);
 
             // Prepare WhatsApp message
-            const restaurantNumber = '+919910109626';
-            let orderDetails = `*New Order - Delicious Bites*\n\n`;
+            const restaurantNumber = '9910109626';
+            let orderDetails = `*New Order - Deepanshu Restaurant*\n\n`; // Updated restaurant name
             orderDetails += `Order Number: *${orderNumber}*\n`;
             orderDetails += `Order Type: *${orderType.charAt(0).toUpperCase() + orderType.slice(1)}*\n`;
             orderDetails += `Customer Name: *${customerName}*\n`;
@@ -964,9 +1167,9 @@
             orderDetails += `\n*Order Details:*\n`;
             cartItems.forEach(item => {
                 const itemDisplayName = item.variantName ? `${item.name} (${item.variantName})` : item.name;
-                orderDetails += `- ${itemDisplayName} (x${item.quantity}) - ₹${(item.price * item.quantity).toFixed(2)}\n`;
+                orderDetails += `- ${itemDisplayName} (x${item.quantity}) - ?${(item.price * item.quantity).toFixed(2)}\n`;
             });
-            orderDetails += `\n*Total: ₹${calculateTotal()}*\n\n`;
+            orderDetails += `\n*Total: ?${calculateTotal()}*\n\n`;
             orderDetails += `Thank you!`;
 
             const encodedMessage = encodeURIComponent(orderDetails);
@@ -979,6 +1182,7 @@
             saveCartToLocalStorage();
             updateCartDisplay();
             hideOrderModal();
+            showToast('Order placed and sent to WhatsApp!', 'success');
             showPage('order-history'); // Redirect to order history after successful order
         }
 
@@ -1043,6 +1247,137 @@
             renderMenu(); // Re-render menu with new filter
         }
 
+        /**
+         * Fetches reviews from Google Sheet and renders them.
+         */
+        async function fetchReviewsAndRender() {
+            existingReviewsContainer.innerHTML = ''; // Clear existing reviews
+            noReviewsMessage.classList.add('hidden'); // Hide no reviews message by default
+
+            if (GOOGLE_SHEET_REVIEW_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_FOR_REVIEWS') {
+                // If not configured, show static reviews and a warning
+                showToast("Google Apps Script URL for Reviews is not configured. Showing static reviews.", 'warning', 5000);
+                renderStaticReviews(); // Render the hardcoded reviews if URL is not set
+                return;
+            }
+
+            try {
+                // Fetch reviews from the Google Apps Script Web App
+                const response = await fetch(`${GOOGLE_SHEET_REVIEW_SCRIPT_URL}?action=getReviews`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                const reviews = data; // Assuming the script returns an array of review objects
+
+                if (reviews.length === 0) {
+                    noReviewsMessage.classList.remove('hidden');
+                } else {
+                    reviews.sort((a, b) => new Date(b.Timestamp) - new Date(a.Timestamp)); // Sort by timestamp, newest first
+                    reviews.forEach(review => {
+                        const reviewDiv = document.createElement('div');
+                        reviewDiv.className = 'bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700';
+
+                        // Generate stars based on rating
+                        let starsHtml = '';
+                        for (let i = 1; i <= 5; i++) {
+                            if (i <= review.Rating) {
+                                starsHtml += `<span data-lucide="star" class="w-5 h-5 fill-current text-yellow-400"></span>`;
+                            } else {
+                                starsHtml += `<span data-lucide="star" class="w-5 h-5 text-yellow-400"></span>`;
+                            }
+                        }
+
+                        const reviewDate = new Date(review.Timestamp).toLocaleString();
+
+                        reviewDiv.innerHTML = `
+                            <div class="flex items-center mb-3">
+                                <span class="font-semibold text-lg text-gray-800 dark:text-white">${review.Name}</span>
+                                <div class="flex ml-auto">
+                                    ${starsHtml}
+                                </div>
+                            </div>
+                            <p class="text-gray-700 dark:text-gray-300 mb-4">"${review.Review}"</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Reviewed on: ${reviewDate}</p>
+                        `;
+                        existingReviewsContainer.appendChild(reviewDiv);
+                    });
+                }
+                lucide.createIcons(); // Re-render Lucide icons for stars
+            } catch (error) {
+                console.error("Error fetching reviews:", error);
+                showToast(`Failed to load reviews: ${error.message}`, 'error', 5000);
+                noReviewsMessage.classList.remove('hidden'); // Show no reviews message on error
+                // Fallback to static reviews if fetching fails and no dynamic reviews were loaded
+                renderStaticReviews();
+            }
+        }
+
+        /**
+         * Renders the hardcoded static reviews.
+         * This function acts as a fallback or initial display if dynamic loading fails/isn't set up.
+         */
+        function renderStaticReviews() {
+            existingReviewsContainer.innerHTML = `
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center mb-3">
+                        <span class="font-semibold text-lg text-gray-800 dark:text-white">Aman K.</span>
+                        <div class="flex ml-auto text-yellow-400">
+                            <span data-lucide="star" class="w-5 h-5 fill-current"></span>
+                            <span data-lucide="star" class="w-5 h-5 fill-current"></span>
+                            <span data-lucide="star" class="w-5 h-5 fill-current"></span>
+                            <span data-lucide="star" class="w-5 h-5 fill-current"></span>
+                            <span data-lucide="star" class="w-5 h-5 fill-current"></span>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">
+                        "Absolutely loved the food! The Margherita pizza was perfect, and the service was quick. Highly recommend!"
+                    </p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Reviewed on: June 20, 2024</p>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center mb-3">
+                        <span class="font-semibold text-lg text-gray-800 dark:text-white">Priya S.</span>
+                        <div class="flex ml-auto text-yellow-400">
+                            <span data-lucide="star" class="w-5 h-5 fill-current"></span>
+                            <span data-lucide="star" class="w-5 h-5 fill-current"></span>
+                            <span data-lucide="star" class="w-5 h-5 fill-current"></span>
+                            <span data-lucide="star" class="w-5 h-5 fill-current"></span>
+                            <span data-lucide="star-half" class="w-5 h-5 fill-current"></span>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">
+                        "Great experience ordering from Deepanshu Restaurant. The Spaghetti Carbonara was rich and delicious. Will definitely order again."
+                    </p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Reviewed on: June 18, 2024</p>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center mb-3">
+                        <span class="font-semibold text-lg text-gray-800 dark:text-white">Rahul M.</span>
+                        <div class="flex ml-auto text-yellow-400">
+                            <span data-lucide="star" class="w-5 h-5 fill-current"></span>
+                            <span data-lucide="star" class="w-5 h-5 fill-current"></span>
+                            <span data-lucide="star" class="w-5 h-5 fill-current"></span>
+                            <span data-lucide="star" class="w-5 h-5 fill-current"></span>
+                            <span data-lucide="star" class="w-5 h-5"></span>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">
+                        "The Chicken Burger was juicy and flavorful. A fantastic option for a quick and tasty meal."
+                    </p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Reviewed on: June 15, 2024</p>
+                </div>
+            `;
+            lucide.createIcons(); // Re-render Lucide icons for stars
+        }
+
 
         // --- Event Listeners ---
         document.addEventListener('DOMContentLoaded', () => {
@@ -1067,13 +1402,11 @@
                 });
             });
 
-
             // Place Order button in cart
             placeOrderButton.addEventListener('click', showOrderModal);
 
             // Clear Cart button
-            clearCartButton.addEventListener('click', clearCart); // Added event listener for clear cart button
-
+            clearCartButton.addEventListener('click', clearCart);
 
             // Modal close button for order modal
             closeModalButton.addEventListener('click', hideOrderModal);
@@ -1110,6 +1443,67 @@
             categoryModalOverlay.addEventListener('click', (event) => {
                 if (event.target === categoryModalOverlay) {
                     hideCategoryModal();
+                }
+            });
+
+            // Submit Review Button
+            submitReviewButton.addEventListener('click', async () => {
+                const reviewerName = reviewerNameInput.value.trim();
+                const reviewText = reviewTextInput.value.trim();
+                const selectedRatingInput = document.querySelector('#review-star-rating input[name="rating"]:checked');
+                const rating = selectedRatingInput ? parseInt(selectedRatingInput.value) : 0;
+
+                if (!reviewerName || !reviewText || rating === 0) {
+                    showToast('Please fill in your name, review, and select a rating before submitting.', 'warning');
+                    return;
+                }
+
+                if (GOOGLE_SHEET_REVIEW_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_FOR_REVIEWS') {
+                    showToast("Review submission is not configured. Please set up Google Apps Script URL.", 'error', 5000);
+                    console.error("Google Apps Script URL for reviews is not configured. Cannot submit review.");
+                    return;
+                }
+
+                submitReviewButton.disabled = true;
+                submitReviewButton.textContent = 'Submitting...';
+                submitReviewButton.classList.add('opacity-50', 'cursor-not-allowed');
+
+                try {
+                    const formData = new FormData();
+                    formData.append('action', 'addReview');
+                    formData.append('Name', reviewerName);
+                    formData.append('Review', reviewText);
+                    formData.append('Rating', rating);
+
+                    const response = await fetch(GOOGLE_SHEET_REVIEW_SCRIPT_URL, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+
+                    if (result.status === 'success') {
+                        showToast('Your review has been submitted successfully!', 'success');
+                        reviewerNameInput.value = '';
+                        reviewTextInput.value = '';
+                        // Clear star selection by unchecking all radio buttons
+                        document.querySelectorAll('#review-star-rating input[name="rating"]').forEach(input => input.checked = false);
+                        lucide.createIcons(); // Re-render Lucide icons to reset star appearance
+                        fetchReviewsAndRender(); // Refresh reviews to show the new one
+                    } else {
+                        throw new Error(result.message || 'Failed to submit review.');
+                    }
+                } catch (error) {
+                    console.error('Error submitting review:', error);
+                    showToast(`Failed to submit review: ${error.message}`, 'error');
+                } finally {
+                    submitReviewButton.disabled = false;
+                    submitReviewButton.textContent = 'Submit Review';
+                    submitReviewButton.classList.remove('opacity-50', 'cursor-not-allowed');
                 }
             });
         });
